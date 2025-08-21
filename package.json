@@ -1,27 +1,53 @@
 {
-  "name": "blog",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.4.6"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.6",
-    "@eslint/eslintrc": "^3"
-  }
+    "name": "blog",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@tailwindcss/typography": "^0.5.16",
+        "bcrypt": "^6.0.0",
+        "beanheads": "^0.3.3",
+        "clsx": "^2.1.1",
+        "date-fns": "^4.1.0",
+        "date-fns-tz": "^3.2.0",
+        "drizzle-orm": "^0.44.4",
+        "gray-matter": "^4.0.3",
+        "js-yaml": "^4.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "next": "15.4.6",
+        "pg": "^8.16.3",
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "react-hook-form": "^7.62.0",
+        "rehype-highlight": "^7.0.2",
+        "rehype-stringify": "^10.0.1",
+        "remark": "^15.0.1",
+        "remark-gfm": "^4.0.1",
+        "remark-parse": "^11.0.0",
+        "remark-rehype": "^11.1.2",
+        "tailwind": "^4.0.0",
+        "tailwind-merge": "^3.3.1"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "@tailwindcss/postcss": "^4",
+        "@types/bcrypt": "^6.0.0",
+        "@types/js-yaml": "^4.0.9",
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/node": "^20",
+        "@types/pg": "^8.15.5",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "drizzle-kit": "^0.31.4",
+        "eslint": "^9",
+        "eslint-config-next": "15.4.6",
+        "highlight.js": "^11.11.1",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    }
 }

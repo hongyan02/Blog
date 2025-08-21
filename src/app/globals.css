@@ -1,26 +1,52 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "highlight.js/styles/github.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #ffffff;
+    --foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.prose {
+    --tw-prose-pre-bg: #fff; /* 自定义背景色 */
+}
+
+@layer base {
+    .prose pre {
+        border: 1px solid var(--tw-prose-pre-border, #e5e7eb); /* 默认浅色边框 */
+    }
+
+    /* 暗黑模式下的边框 */
+    .prose-invert pre {
+        border: 1px solid var(--tw-prose-invert-pre-border, #374151);
+    }
+}
+
+@layer utilities {
+    .grid-background {
+        background-color: #fefcf8; /* 背景底色 */
+        background-image: linear-gradient(to right, #ddd 1px, transparent 1px),
+            linear-gradient(to bottom, #ddd 1px, transparent 1px);
+        background-size: 40px 40px; /* 每格宽高 */
+    }
 }
