@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { users } from "@/db/schema";
 import { InferSelectModel } from "drizzle-orm";
 
-export type User = Pick<InferSelectModel<typeof users>, "id" | "username" | "role">;
+export type User = Pick<InferSelectModel<typeof users>, "id" | "username" | "role" | "avatar">;
 
 interface AuthContextType {
     user: User | null;

@@ -21,17 +21,7 @@ export function UserHeader() {
         <div className="w-full h-20 p-4 flex flex-row items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center w-full space-x-4">
                 <div className="w-16 h-16 rounded-full overflow-hidden shadow-md ring-2 ring-white hover:ring-blue-200 transition-all duration-300 hover:scale-105">
-                    <BeanHead
-                        accessory="roundGlasses"
-                        body="chest"
-                        clothing="tankTop"
-                        clothingColor="blue"
-                        eyes="wink"
-                        hair="short"
-                        hairColor="black"
-                        mouth="openSmile"
-                        skinTone="brown"
-                    />
+                    <BeanHead {...user.avatar} />
                 </div>
                 <span className="text-lg font-bold text-gray-800 dark:text-white">
                     {user?.username}

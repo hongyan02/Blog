@@ -2,6 +2,14 @@
 @plugin "@tailwindcss/typography";
 @import "highlight.js/styles/github.css";
 
+@font-face {
+    font-family: "Maple Mono";
+    src: url("/fonts/MapleMonoNL-Medium.ttf.woff2") format("woff2"),
+        url("/fonts/MapleMonoNL-Light.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
     --background: #ffffff;
     --foreground: #171717;
@@ -24,11 +32,17 @@
 body {
     background: var(--background);
     color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Maple Mono", monospace, Arial, sans-serif;
 }
 
 .prose {
     --tw-prose-pre-bg: #fff; /* 自定义背景色 */
+}
+
+.prose,
+code,
+pre {
+    font-family: "Maple Mono", monospace;
 }
 
 @layer base {

@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
         // 最少 1 个，最多 50 个
 
         const expiresAt = new Date(); // 当前 UTC 时间
+        expiresAt.setDate(expiresAt.getDate() + 3); // 加上3天
         const timeZone = "Asia/Shanghai";
         // 转换为北京时间
         const zoned = toZonedTime(expiresAt, timeZone);

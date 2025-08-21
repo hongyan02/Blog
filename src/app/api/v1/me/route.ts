@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
                 username: user.username,
                 role: user.role,
                 createtime: user.createdAt,
+                avatar: user.avatar,
             },
         });
     } catch (err) {
