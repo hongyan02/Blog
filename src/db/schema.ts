@@ -1,7 +1,5 @@
-import {
-    pgTable,
-    index,
-} from "drizzle-orm/pg-core";
+import { pgTable, index, jsonb } from "drizzle-orm/pg-core";
+import randomBeanHead, { BeanHeadProps } from "@/shared/avatar";
 
 /* ========== 邀请码表 ========== */
 export const invites = pgTable(
@@ -44,6 +42,11 @@ export const users = pgTable(
         status: t.smallint("status").default(0).notNull(),
         // 账号角色：0 普通用户，1 管理员
         role: t.smallint("role").default(0).notNull(),
+        //beanhead头像生成
+        avatar: jsonb("avatar")
+            .notNull()
+            .default(randomBeanHead()) // ← 直接当默认值
+            .$type<BeanHeadProps>(),
     }),
     (table) => [
         // 按 status 建索引，方便快速查询正常/冻结/注销用户
