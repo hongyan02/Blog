@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/shared/db";
 import { invites } from "@/db/schema";
-import { requireAuth } from "@/features/auth/auth";
 import { format } from "date-fns";
-import { toZonedTime, format as formatTz } from "date-fns-tz";
+import { toZonedTime } from "date-fns-tz";
 
 // Base58 字符集（排除 0 O I l）
 const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
