@@ -1,0 +1,58 @@
+import {
+    pgTable,
+    uuid,
+    varchar,
+    char,
+    timestamp,
+    boolean,
+    smallint,
+    index,
+} from "drizzle-orm/pg-core";
+
+/* ========== 邀请码表 ========== */
+export const invites = pgTable(
+    "invites",
+    (t) => ({
+        // 16 位 Base58 随机邀请码，主键
+        code: t.char("code", { length: 16 }).primaryKey(),
+        // 是否已被使用：true=已使用，false=未使用
+        used: t.boolean("used").default(false),
+        // 使用此邀请码注册成功的用户 id（外键到 users.id）
+        usedBy: t.uuid("used_by"),
+        // 邀请码生成时间
+        createdAt: t.timestamp("created_at").defaultNow().notNull(),
+        // 邀请码过期时间，过期后不可再用于注册
+        expiresAt: t.timestamp("expires_at").notNull(),
+    }),
+    (table) => [
+        // 辅助索引，便于快速查询「可用」邀请码
+        index("idx_invites_available").on(table.code),
+    ]
+);
+
+/* ========== 用户表 ========== */
+export const users = pgTable(
+    "users",
+    (t) => ({
+        // 用户唯一 id，自动生成 UUID
+        id: t.uuid("id").defaultRandom().primaryKey(),
+        // 用户名，全局唯一，不超过 32 字符
+        username: t.varchar("username", { length: 32 }).notNull().unique(),
+        // 密码的 bcrypt 哈希，固定 60 字符
+        password: t.char("password", { length: 60 }).notNull(),
+        // 注册时使用的邀请码（外键到 invites.code）
+        inviteCode: t
+            .char("invite_code", { length: 16 })
+            .references(() => invites.code, { onDelete: "set null" }),
+        // 账号创建时间
+        createdAt: t.timestamp("created_at").defaultNow().notNull(),
+        // 账号状态：0 正常，1 冻结，2 注销
+        status: t.smallint("status").default(0).notNull(),
+        // 账号角色：0 普通用户，1 管理员
+        role: t.smallint("role").default(0).notNull(),
+    }),
+    (table) => [
+        // 按 status 建索引，方便快速查询正常/冻结/注销用户
+        index("idx_users_status").on(table.status),
+    ]
+);

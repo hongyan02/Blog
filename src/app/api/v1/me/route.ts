@@ -1,0 +1,25 @@
+import { NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/features/auth/auth";
+import { db } from "@/shared/db";
+import { eq } from "drizzle-orm";
+import { users } from "@/db/schema";
+
+export async function GET(req: NextRequest) {
+    try {
+        const { userId } = requireAuth(req);
+
+        const [user] = await db.select().from(users).where(eq(users.id, userId));
+        if (!user) throw new Error("用户不存在");
+
+        return NextResponse.json({
+            user: {
+                id: user.id,
+                username: user.username,
+                role: user.role,
+                createtime: user.createdAt,
+            },
+        });
+    } catch (err) {
+        return NextResponse.json({ error: (err as Error).message }, { status: 401 });
+    }
+}
