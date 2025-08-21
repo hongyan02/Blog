@@ -4,6 +4,7 @@ import { validateUsername, validatePassword } from "@/shared/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth/components/AuthContext";
+import { encryptPassword } from "@/shared/crypto";
 
 type Inputs = {
     username: string;
@@ -25,12 +26,15 @@ export default function LoginForm() {
         setServerError("");
 
         try {
+            // 加密密码后再发送
+            const encryptedPassword = encryptPassword(data.password);
+            
             const res = await fetch("/api/v1/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     username: data.username,
-                    password: data.password,
+                    password: encryptedPassword,
                 }),
             });
 
