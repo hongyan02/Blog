@@ -3,11 +3,20 @@ import bcrypt from "bcrypt";
 import { db } from "@/shared/db";
 import { users, invites } from "@/db/schema";
 import { eq, and, gt } from "drizzle-orm";
-import { signToken } from "@/features/auth/jwt";
 import { validateUsername, validatePassword } from "@/shared/utils";
+import { signToken } from "@/features/auth/jwt";
+import { decryptPassword } from "@/shared/crypto";
 
 export async function POST(req: NextRequest) {
     const { username, password, inviteCode } = await req.json();
+
+    // 解密前端传来的加密密码
+    let decryptedPassword: string;
+    try {
+        decryptedPassword = decryptPassword(password);
+    } catch (error) {
+        return NextResponse.json({ error: "密码格式错误" }, { status: 400 });
+    }
 
     /* 1. 用户名校验 */
     if (!validateUsername(username)) {
@@ -18,7 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
     /* 2. 密码校验 */
-    if (!validatePassword(password)) {
+    if (!validatePassword(decryptedPassword)) {
         return NextResponse.json(
             { error: "密码必须同时包含数字、字母符号，特殊符号只允许@，且长度不少于 6 位" },
             { status: 400 }
@@ -39,7 +48,7 @@ export async function POST(req: NextRequest) {
     if (!invite) return NextResponse.json({ error: "邀请码无效或已过期" }, { status: 400 });
 
     // 2. 创建用户
-    const hashed = await bcrypt.hash(password, 10);
+    const hashed = await bcrypt.hash(decryptedPassword, 10);
     const [user] = await db
         .insert(users)
         .values({
