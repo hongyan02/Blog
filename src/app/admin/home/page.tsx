@@ -1,10 +1,7 @@
-import { verifyToken } from "@/features/auth/jwt";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { requirePageAuth } from "@/features/auth/auth";
 
 export default async function Home() {
-    const user = await requirePageAuth();
+    await requirePageAuth();
 
     return (
         <div>

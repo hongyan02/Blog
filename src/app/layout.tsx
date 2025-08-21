@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SideBar from "@/features/sidebar/ui/SideBar";
-import { AuthProvider } from "@/features/auth/components/AuthContext";
 
 export const metadata: Metadata = {
     title: "AgCl",
