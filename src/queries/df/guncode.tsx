@@ -40,3 +40,23 @@ export const useGunCodeMutation = () => {
         },
     });
 };
+
+export const useDeleteGunCodeMutation = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const res = await fetch(`/api/v1/df/guncode`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id }),
+            });
+            if (!res.ok) throw new Error(await res.text());
+            return res.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["guncode"] });
+        },
+    });
+};

@@ -1,6 +1,0 @@
-database:
-  host: "localhost"
-  port: 5432
-  database: "blog"
-  user: "agcl"
-  password: "123456"
