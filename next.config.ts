@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+    /* config options here */
+    images: {
+        domains: ["agcl.space"], // 允许的外链图片域名
+    },
 };
 
 export default nextConfig;

@@ -3,6 +3,22 @@ import path from "path";
 import matter from "gray-matter";
 import { markdownToHtml } from "./markdown"; // 你写的remark/rehype方法
 
+//获取aboutme
+// export async function getAboutMe() {
+//     const filePath = path.join(process.cwd(), "contents/", `aboutme.md`);
+//     const fileContents = fs.readFileSync(filePath, "utf-8");
+//     // gray-matter 解析
+//     const { data, content } = matter(fileContents);
+
+//     // 把 Markdown 转成 HTML
+//     const htmlContent = await markdownToHtml(content);
+
+//     return {
+//         frontmatter: data, // { title, date, tags }
+//         content: htmlContent,
+//     };
+// }
+
 // 获取文章详情
 export async function getPost(slug: string) {
     const filePath = path.join(process.cwd(), "contents/posts", `${slug}.md`);
