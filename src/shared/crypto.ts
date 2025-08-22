@@ -1,7 +1,7 @@
 import CryptoJS from "crypto-js";
 
 // 加密密钥 - 在生产环境中应该从环境变量获取
-const SECRET_KEY = process.env.SECRET_KEY!;
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY!;
 
 /**
  * AES加密

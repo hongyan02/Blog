@@ -1,17 +1,17 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { requireAuth } from "@/features/auth/auth";
+
+const PROTECTED_PATHS = ["/games/df/store", "/games/profile"];
 
 export function middleware(req: NextRequest) {
-    console.log("🔍 middleware hit:", req.nextUrl.pathname);
-    try {
-        requireAuth(req); // 会抛异常就表示未登录
-        return NextResponse.next();
-    } catch {
-        return NextResponse.redirect(new URL("/games", req.url));
-    }
-}
+    const token = req.cookies.get("token")?.value;
+    const pathname = req.nextUrl.pathname;
 
-export const config = {
-    matcher: ["/"], // 需要保护的路由
-};
+    const isProtected = PROTECTED_PATHS.some((path) => pathname.startsWith(path));
+
+    if (!token && isProtected) {
+        return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    return NextResponse.next();
+}

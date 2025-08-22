@@ -15,6 +15,13 @@
       "when": 1755776366445,
       "tag": "0001_friendly_shard",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755826978483,
+      "tag": "0002_flawless_stryfe",
+      "breakpoints": true
     }
   ]
 }

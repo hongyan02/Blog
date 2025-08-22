@@ -6,7 +6,9 @@ import { users } from "@/db/schema";
 
 export async function GET(req: NextRequest) {
     try {
-        const { userId } = requireAuth(req);
+        const payload = requireAuth(req);
+        if (!payload) throw new Error("未登录");
+        const { userId } = payload;
 
         const [user] = await db.select().from(users).where(eq(users.id, userId));
         if (!user) throw new Error("用户不存在");
