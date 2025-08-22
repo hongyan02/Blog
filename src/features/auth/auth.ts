@@ -5,12 +5,16 @@ import { redirect } from "next/navigation";
 
 export function requireAuth(req: NextRequest) {
     const token = req.cookies.get("token")?.value;
-    if (!token) throw new Error("未登录");
+    // if (!token) throw new Error("未登录");
+    if (!token) return null;
 
-    const payload = verifyToken<{ userId: string; username: string; role: number }>(token);
-    if (!payload) throw new Error("token 无效或已过期");
-
-    return payload; // { userId, username, role }
+    try {
+        const payload = verifyToken<{ userId: string; username: string; role: number }>(token);
+        return payload ?? null; // 如果 verifyToken 返回 undefined / null
+    } catch {
+        // token 被篡改、过期、签名错误
+        return null;
+    }
 }
 
 export async function requirePageAuth() {

@@ -1,6 +1,9 @@
 import { pgTable, index, jsonb } from "drizzle-orm/pg-core";
 import randomBeanHead, { BeanHeadProps } from "@/shared/avatar";
+import { InferSelectModel } from "drizzle-orm";
 
+export type WeaponBuild = InferSelectModel<typeof weaponBuilds>;
+export type User = InferSelectModel<typeof users>;
 /* ========== 邀请码表 ========== */
 export const invites = pgTable(
     "invites",
@@ -51,5 +54,36 @@ export const users = pgTable(
     (table) => [
         // 按 status 建索引，方便快速查询正常/冻结/注销用户
         index("idx_users_status").on(table.status),
+    ]
+);
+
+/* ========== 游戏-三角洲行动-改枪码表 ========== */
+export const weaponBuilds = pgTable(
+    "weapon_builds",
+    (t) => ({
+        id: t.uuid("id").defaultRandom().primaryKey(),
+
+        ownerId: t
+            .uuid("owner_id")
+            .references(() => users.id, { onDelete: "cascade" })
+            .notNull(),
+
+        weaponName: t.varchar("weapon_name", { length: 64 }).notNull(),
+
+        // 改名：gunCode
+        gunCode: t.text("gun_code").notNull(),
+
+        description: t.text("description").notNull(),
+
+        isPublic: t.boolean("is_public").default(false).notNull(),
+
+        deletedAt: t.timestamp("deleted_at"),
+
+        createdAt: t.timestamp("created_at").defaultNow().notNull(),
+        updatedAt: t.timestamp("updated_at").defaultNow().notNull(),
+    }),
+    (table) => [
+        index("idx_weapon_builds_public").on(table.isPublic, table.deletedAt),
+        index("idx_weapon_builds_owner").on(table.ownerId),
     ]
 );

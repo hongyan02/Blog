@@ -3,9 +3,22 @@ import { BeanHead } from "beanheads";
 import { useAuth } from "@/features/auth/components/AuthContext";
 import Link from "next/link";
 import ExitIcon from "../icons/Exit";
+import { usePathname } from "next/navigation";
 
 export function UserHeader() {
     const { user, loading, logout } = useAuth();
+    const pathname = usePathname(); // 获取当前路径
+
+    let targetPath: string;
+    if (pathname === "/games") {
+        targetPath = "/games/profile"; // 根路径跳 profile
+    } else if (pathname.startsWith("/games/profile")) {
+        targetPath = "/games/profile";
+    } else if (pathname.startsWith("/games")) {
+        targetPath = pathname.replace(/\/store$/, "") + "/store"; // 子路由跳 store
+    } else {
+        targetPath = "/games"; // 兜底
+    }
 
     //加载用户数据
     if (loading) {
@@ -21,7 +34,9 @@ export function UserHeader() {
         <div className="w-full h-20 p-4 flex flex-row items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center w-full space-x-4">
                 <div className="w-16 h-16 rounded-full overflow-hidden shadow-md ring-2 ring-white hover:ring-blue-200 transition-all duration-300 hover:scale-105">
-                    <BeanHead {...user.avatar} />
+                    <Link href={targetPath}>
+                        <BeanHead {...user.avatar} />
+                    </Link>
                 </div>
                 <span className="text-lg font-bold text-gray-800 dark:text-white">
                     {user?.username}
@@ -38,22 +53,26 @@ export function UserHeader() {
         <div className="w-full h-20 p-4 flex flex-row items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm border border-gray-100">
             <div className="w-16 h-16 rounded-full overflow-hidden shadow-md ring-2 ring-white hover:ring-blue-200 transition-all duration-300 hover:scale-105">
                 <BeanHead
+                    accessory="none"
                     body="chest"
-                    clothing="dressShirt"
-                    clothingColor="blue"
-                    eyes="happy"
-                    eyebrows="raised"
-                    hair="short"
-                    hairColor="brown"
-                    mouth="openSmile"
-                    skinTone="light"
-                    mask={true}
+                    circleColor="blue"
+                    clothing="naked"
+                    clothingColor="white"
+                    eyebrows="serious"
+                    eyes="dizzy"
                     faceMask={false}
-                    graphic="none"
-                    facialHair="none"
-                    accessory="roundGlasses"
-                    hat="none"
+                    faceMaskColor="green"
+                    facialHair="none3"
+                    graphic="gatsby"
+                    hair="none"
+                    hairColor="pink"
+                    hat="none5"
+                    hatColor="black"
                     lashes={false}
+                    lipColor="pink"
+                    mask
+                    mouth="openSmile"
+                    skinTone="red"
                 />
             </div>
             <div className="flex items-center">

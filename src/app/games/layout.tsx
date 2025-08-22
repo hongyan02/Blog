@@ -4,10 +4,12 @@ import GameBarClient from "@/features/sidebar/ui/GameBarClient";
 import { AuthProvider } from "@/features/auth/components/AuthContext";
 import { UserHeader } from "@/shared/ui/UserHeader";
 import { usePathname } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
 
 export default function GamesLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-
+    const [queryClient] = useState(() => new QueryClient());
     const hideUserHeader = ["/games/login", "/games/register"].includes(pathname);
     const items: { title: string; slug: string }[] = [
         {
@@ -26,8 +28,9 @@ export default function GamesLayout({ children }: { children: React.ReactNode })
             <AuthProvider>
                 <main className="w-[80vw] h-full p-3 overflow-auto grid-background">
                     {/*登录页和注册页不显示用户头*/}
+
                     {!hideUserHeader && <UserHeader />}
-                    {children}
+                    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
                 </main>
             </AuthProvider>
         </div>

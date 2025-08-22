@@ -1,8 +1,11 @@
+import ShowGunCode from "@/shared/ui/df/clipborde";
 export default function DF() {
     return (
         <div>
             <header className="p-3"></header>
-            <main></main>
+            <main>
+                <ShowGunCode />
+            </main>
         </div>
     );
 }

@@ -25,7 +25,7 @@ export default function GameBarClient({ datasource }: Props) {
                             href={`/games/${game.slug}`}
                             className={cn(
                                 "w-full p-2 flex flex-col space-y-1 rounded-md",
-                                pathname === `/games/${game.slug}`
+                                pathname.startsWith(`/games/${game.slug}`)
                                     ? "text-white bg-black"
                                     : "text-black"
                             )}

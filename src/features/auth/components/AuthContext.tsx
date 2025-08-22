@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { users } from "@/db/schema";
 import { InferSelectModel } from "drizzle-orm";
+import { useRouter } from "next/navigation";
 
 export type User = Pick<InferSelectModel<typeof users>, "id" | "username" | "role" | "avatar">;
 
@@ -17,7 +18,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-
+    const router = useRouter();
     // 页面刷新时自动获取用户信息
     useEffect(() => {
         const fetchUser = async () => {
@@ -46,7 +47,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // 前端登出
     const logout = async () => {
         setUser(null);
-        await fetch("/api/v1/logout", { method: "POST" }); // 清 cookie
+        const res = await fetch("/api/v1/logout", { method: "POST" }); // 清 cookie
+        if (res.ok) {
+            // 登出成功
+            router.push("/games");
+        }
     };
 
     return (
