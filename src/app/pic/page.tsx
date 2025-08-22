@@ -3,6 +3,8 @@ import Image from "next/image";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
     const files = await getCosFiles("wallpaper/");
     const bucketUrl = "https://agcl.space";
