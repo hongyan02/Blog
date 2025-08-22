@@ -18,13 +18,13 @@ export function GunCodeCard({ data }: { data: GunCodeData }) {
         <div className="rounded-md border-2 border-gray-400/50 bg-white/30 backdrop-blur-md p-4 h-40 flex flex-col justify-between">
             <h2 className="text-lg font-bold">{data.weaponName}</h2>
             <p className="text-sm text-gray-500">{data.description}</p>
-            <p className="text-sm">{data.gunCode}</p>
-            <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                    <div className="w-6 h-6">
+            <p className="text-sm truncate">{data.gunCode}</p>
+            <div className="flex items-center justify-between gap-2 min-w-0">
+                <div className="flex items-center gap-2 min-w-0">
+                    <div className="w-6 h-6 shrink-0">
                         <BeanHead {...data.avatar} />
                     </div>
-                    <span className="text-sm">{data.username}</span>
+                    <span className="text-sm truncate">{data.username}</span>
                 </div>
                 <button
                     className="p-1 rounded-md transition-transform transform hover:scale-125 hover:text-blue-500"
