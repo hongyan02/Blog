@@ -79,3 +79,41 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "服务器内部错误" }, { status: 500 });
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const user = requireAuth(req);
+        if (!user) return NextResponse.json({ error: "未登录或 token 无效" }, { status: 401 });
+
+        const body = await req.json();
+        const parsed = z.object({ id: z.string().uuid() }).safeParse(body);
+        if (!parsed.success) {
+            return NextResponse.json(
+                { error: "参数错误", details: parsed.error.flatten() },
+                { status: 400 }
+            );
+        }
+        const { id } = parsed.data;
+
+        // 查询并校验
+        const rows = await db
+            .select({ ownerId: weaponBuilds.ownerId })
+            .from(weaponBuilds)
+            .where(and(eq(weaponBuilds.id, id), isNull(weaponBuilds.deletedAt)));
+
+        if (rows.length === 0) {
+            return NextResponse.json({ error: "方案不存在" }, { status: 404 });
+        }
+        if (rows[0].ownerId !== user.userId) {
+            return NextResponse.json({ error: "无权限" }, { status: 403 });
+        }
+
+        // 逻辑删除
+        await db.update(weaponBuilds).set({ deletedAt: new Date() }).where(eq(weaponBuilds.id, id));
+
+        return NextResponse.json({ data: { id } }, { status: 200 });
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ error: "服务器内部错误" }, { status: 500 });
+    }
+}
