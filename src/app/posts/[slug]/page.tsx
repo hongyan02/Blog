@@ -21,10 +21,7 @@ export default async function PostPage({ params }: PageProps) {
             <p>{formatDate(post.frontmatter.date)}</p>
             <div>
                 {post.frontmatter.tags?.map((tag: string) => (
-                    <span
-                        key={tag}
-                        className="px-2 py-1 bg-gray-200 rounded mr-2"
-                    >
+                    <span key={tag} className="px-2 py-1 bg-gray-200 rounded mr-2">
                         {tag}
                     </span>
                 ))}
