@@ -27,7 +27,7 @@ export default function SideBar() {
         { name: "首页", path: "/", segment: null, Icon: HomeIcon },
         { name: "文章", path: "/posts", segment: "posts", Icon: PostIcon },
         { name: "游戏", path: "/games", segment: "games", Icon: GameIcon },
-        { name: "时间轴", path: "timeline", segment: "timeline", Icon: TimeLineIcon },
+        { name: "时间轴", path: "/timeline", segment: "timeline", Icon: TimeLineIcon },
         { name: "图片墙", path: "/pic", segment: "pic", Icon: MixIcon },
     ];
 
