@@ -84,7 +84,6 @@ export async function DELETE(req: NextRequest) {
     try {
         const user = requireAuth(req);
         if (!user) return NextResponse.json({ error: "未登录或 token 无效" }, { status: 401 });
-
         const body = await req.json();
         const parsed = z.object({ id: z.string().uuid() }).safeParse(body);
         if (!parsed.success) {

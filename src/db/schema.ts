@@ -70,7 +70,6 @@ export const weaponBuilds = pgTable(
 
         weaponName: t.varchar("weapon_name", { length: 64 }).notNull(),
 
-        // 改名：gunCode
         gunCode: t.text("gun_code").notNull(),
 
         description: t.text("description").notNull(),
