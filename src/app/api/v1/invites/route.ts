@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/shared/db";
 import { invites } from "@/db/schema";
-import { format } from "date-fns";
+import { requireAuth } from "@/features/auth/auth";
 import { toZonedTime } from "date-fns-tz";
 
 // Base58 字符集（排除 0 O I l）
@@ -18,10 +18,13 @@ function generateCode(length = 16) {
 export async function POST(req: NextRequest) {
     try {
         // ✅ 检查用户身份
-        // const { role } = requireAuth(req);
-        // if (role !== 1) {
-        //     return NextResponse.json({ error: "无权限" }, { status: 403 });
-        // }
+        const user = requireAuth(req);
+        if (!user) {
+            return NextResponse.json({ error: "未登录或 token 无效" }, { status: 401 });
+        }
+        if (user.role !== 1) {
+            return NextResponse.json({ error: "无权限" }, { status: 403 });
+        }
 
         // ✅ 解析请求体
         const body = await req.json().catch(() => ({}));
@@ -30,11 +33,7 @@ export async function POST(req: NextRequest) {
 
         const expiresAt = new Date(); // 当前 UTC 时间
         expiresAt.setDate(expiresAt.getDate() + 3); // 加上3天
-        const timeZone = "Asia/Shanghai";
-        // 转换为北京时间
-        const zoned = toZonedTime(expiresAt, timeZone);
-        // 格式化成无时区字符串
-        const expiresAtBJ = format(zoned, "yyyy-MM-dd HH:mm:ss");
+        const expiresAtBJ = toZonedTime(expiresAt, "Asia/Shanghai");
 
         const codes = Array.from({ length: count }, () => generateCode());
 
@@ -42,11 +41,32 @@ export async function POST(req: NextRequest) {
         await db.insert(invites).values(
             codes.map((code) => ({
                 code,
-                expiresAt: zoned,
+                expiresAt: expiresAtBJ,
             }))
         );
 
         return NextResponse.json({ codes, expiresAtBJ });
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ error: "生成邀请码失败" }, { status: 500 });
+    }
+}
+
+export async function GET(req: NextRequest) {
+    try {
+        // ✅ 检查用户身份
+        const user = requireAuth(req);
+        if (!user) {
+            return NextResponse.json({ error: "未登录或 token 无效" }, { status: 401 });
+        }
+        if (user.role !== 1) {
+            return NextResponse.json({ error: "无权限" }, { status: 403 });
+        }
+
+        // ✅ 查询所有邀请码
+        const codes = await db.select().from(invites);
+
+        return NextResponse.json(codes);
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: "生成邀请码失败" }, { status: 500 });
