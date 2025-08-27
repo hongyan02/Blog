@@ -20,10 +20,7 @@ export default function GamesLayout({ children }: { children: React.ReactNode })
     return (
         <div className="flex w-full h-full">
             <aside className="w-[20vw] h-full overflow-y-auto p-3 bg-gray-100/70 border-r-2 border-gray-200">
-                <AnyBar
-                    barComponent={GameBarClient}
-                    items={items}
-                />
+                <AnyBar barComponent={GameBarClient} items={items} />
             </aside>
             <AuthProvider>
                 <main className="w-[80vw] h-full p-3 overflow-auto grid-background">

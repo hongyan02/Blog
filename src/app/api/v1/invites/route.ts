@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/shared/db";
-import { invites } from "@/db/schema";
+import { invites, users } from "@/db/schema";
+import { alias } from "drizzle-orm/pg-core";
+import { and, eq, isNull, desc } from "drizzle-orm";
 import { requireAuth } from "@/features/auth/auth";
 import { toZonedTime } from "date-fns-tz";
 
@@ -14,7 +16,7 @@ function generateCode(length = 16) {
     }
     return code;
 }
-
+const usedUser = alias(users, "usedUser");
 export async function POST(req: NextRequest) {
     try {
         // ✅ 检查用户身份
@@ -25,6 +27,9 @@ export async function POST(req: NextRequest) {
         if (user.role !== 1) {
             return NextResponse.json({ error: "无权限" }, { status: 403 });
         }
+
+        const creator = user;
+        const creatorUsername = user.username;
 
         // ✅ 解析请求体
         const body = await req.json().catch(() => ({}));
@@ -42,10 +47,11 @@ export async function POST(req: NextRequest) {
             codes.map((code) => ({
                 code,
                 expiresAt: expiresAtBJ,
+                creator: creator.userId,
             }))
         );
 
-        return NextResponse.json({ codes, expiresAtBJ });
+        return NextResponse.json({ codes, expiresAtBJ, creatorUsername });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: "生成邀请码失败" }, { status: 500 });
@@ -64,11 +70,22 @@ export async function GET(req: NextRequest) {
         }
 
         // ✅ 查询所有邀请码
-        const codes = await db.select().from(invites);
+        const codes = await db
+            .select({
+                code: invites.code,
+                creator: users.username, // ← 取用户名
+                used: invites.used,
+                usedBy: usedUser.username,
+                createdAt: invites.createdAt,
+                expiresAt: invites.expiresAt,
+            })
+            .from(invites)
+            .innerJoin(users, eq(users.id, invites.creator))
+            .leftJoin(usedUser, eq(usedUser.id, invites.usedBy));
 
         return NextResponse.json(codes);
     } catch (err) {
         console.error(err);
-        return NextResponse.json({ error: "生成邀请码失败" }, { status: 500 });
+        return NextResponse.json({ error: "获取邀请码失败" }, { status: 500 });
     }
 }

@@ -1,6 +1,6 @@
 import { pgTable, index, jsonb } from "drizzle-orm/pg-core";
 import randomBeanHead, { BeanHeadProps } from "@/shared/avatar";
-import { InferSelectModel } from "drizzle-orm";
+import { InferSelectModel, sql } from "drizzle-orm";
 export type Invite = InferSelectModel<typeof invites>;
 export type WeaponBuild = InferSelectModel<typeof weaponBuilds>;
 export type User = InferSelectModel<typeof users>;
@@ -10,6 +10,8 @@ export const invites = pgTable(
     (t) => ({
         // 16 位 Base58 随机邀请码，主键
         code: t.char("code", { length: 16 }).primaryKey(),
+        //创建人
+        creator: t.uuid("creator"),
         // 是否已被使用：true=已使用，false=未使用
         used: t.boolean("used").default(false),
         // 使用此邀请码注册成功的用户 id（外键到 users.id）
@@ -17,7 +19,11 @@ export const invites = pgTable(
         // 邀请码生成时间
         createdAt: t.timestamp("created_at").defaultNow().notNull(),
         // 邀请码过期时间，过期后不可再用于注册
-        expiresAt: t.timestamp("expires_at").notNull(),
+        // expiresAt: t.timestamp("expires_at").notNull(),
+        expiresAt: t
+            .timestamp("expires_at")
+            .default(sql`(now() + interval '3 days')`)
+            .notNull(),
     }),
     (table) => [
         // 辅助索引，便于快速查询「可用」邀请码
