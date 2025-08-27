@@ -1,0 +1,2 @@
+ALTER TABLE "invites" ALTER COLUMN "expires_at" SET DEFAULT (now() + interval '3 days');--> statement-breakpoint
+ALTER TABLE "users" ALTER COLUMN "avatar" SET DEFAULT '{"accessory":"none","body":"breasts","circleColor":"blue","clothing":"naked","clothingColor":"red","eyebrows":"serious","eyes":"wink","facialHair":"none3","graphic":"vue","hair":"bob","hairColor":"white","hat":"turban","hatColor":"black","lashes":false,"lipColor":"turqoise","mask":false,"faceMask":false,"mouth":"open","skinTone":"light"}'::jsonb;

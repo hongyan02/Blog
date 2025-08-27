@@ -1,0 +1,2 @@
+ALTER TABLE "users" ALTER COLUMN "avatar" SET DEFAULT '{"accessory":"tinyGlasses","body":"chest","circleColor":"blue","clothing":"dress","clothingColor":"blue","eyebrows":"leftLowered","eyes":"squint","facialHair":"none","graphic":"redwood","hair":"afro","hairColor":"blue","hat":"none","hatColor":"white","lashes":false,"lipColor":"purple","mask":false,"faceMask":false,"mouth":"open","skinTone":"brown"}'::jsonb;--> statement-breakpoint
+ALTER TABLE "invites" ADD COLUMN "creator" uuid;

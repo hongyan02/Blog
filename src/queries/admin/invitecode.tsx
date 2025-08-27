@@ -14,14 +14,21 @@ export const useInviteCode = () => {
 };
 
 export const useCreateInviteCode = () => {
+    const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async () => {
+        mutationFn: async ({ count }: { count: number }) => {
             const res = await fetch("/api/v1/invites", {
                 method: "POST",
                 credentials: "include", // 关键：带上 HttpOnly Cookie
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ count }),
             });
             if (!res.ok) throw new Error(await res.text());
             return res.json(); // { data: WeaponBuild[] }
+        },
+        onSuccess: () => {
+            // 上传成功后自动刷新列表
+            queryClient.invalidateQueries({ queryKey: ["inviteCode"] });
         },
     });
 };

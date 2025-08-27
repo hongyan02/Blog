@@ -31,6 +31,7 @@ export default function InviteTable() {
                 <TableRow>
                     <TableHead className="w-[100px]">邀请码</TableHead>
                     <TableHead>状态</TableHead>
+                    <TableHead>创建人</TableHead>
                     <TableHead>使用人</TableHead>
                     <TableHead>过期时间</TableHead>
                     <TableHead>创建时间</TableHead>
@@ -40,7 +41,8 @@ export default function InviteTable() {
                 {data.map((item: Invite) => (
                     <TableRow key={item.code}>
                         <TableCell>{item.code}</TableCell>
-                        <TableCell>{item.used}</TableCell>
+                        <TableCell>{item.used ? "已使用" : "未使用"}</TableCell>
+                        <TableCell>{item.creator}</TableCell>
                         <TableCell>{item.usedBy}</TableCell>
                         <TableCell>{item.expiresAt?.toLocaleString()}</TableCell>
                         <TableCell>{item.createdAt?.toLocaleString()}</TableCell>
