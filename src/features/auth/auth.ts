@@ -24,7 +24,7 @@ export async function requirePageAuth() {
 
     if (!payload) {
         console.log("未登录");
-        redirect("/games"); // 未登录 → 立即 302
+        redirect("/games/login"); // 未登录 → 立即 302
     }
     return payload; // 已登录 → 把用户信息返回给页面使用
 }
