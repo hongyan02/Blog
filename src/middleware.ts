@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { requireAuth } from "@/features/auth/auth";
 
 export function middleware(req: NextRequest) {
     const token = req.cookies.get("token")?.value;
@@ -13,10 +14,14 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/games/login", req.url));
     }
 
+    // const payload = requireAuth(req);
+    // if (payload?.username !== "agcl") {
+    //     return NextResponse.redirect(new URL("/", req.url));
+    // }
     return NextResponse.next();
 }
 
 // 配置 matcher 来指定中间件运行的路径
 export const config = {
-    matcher: ["/games/df/store/:path*", "/games/profile/:path*"],
+    matcher: ["/games/df/store/:path*", "/games/profile/:path*", "/admin/:path*"],
 };
