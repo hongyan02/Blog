@@ -1,5 +1,6 @@
 import { getPost, getAllPostSlugs } from "@/features/md/lib/posts";
 import { formatDate } from "@/shared/utils";
+import { Metadata } from "next";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -8,6 +9,27 @@ interface PageProps {
 export async function generateStaticParams() {
     const slugs = getAllPostSlugs();
     return slugs.map((slug) => ({ slug }));
+}
+
+// 动态生成metadata
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const decodedSlug = decodeURIComponent(slug);
+
+    try {
+        const post = await getPost(decodedSlug);
+        return {
+            title: post.frontmatter.title || decodedSlug,
+            description: post.frontmatter.description || `阅读文章: ${post.frontmatter.title}`,
+            icons: "/favicon.ico",
+        };
+    } catch (error) {
+        return {
+            title: decodedSlug,
+            description: "AgCl's blog",
+            icons: "/favicon.ico",
+        };
+    }
 }
 
 export default async function PostPage({ params }: PageProps) {

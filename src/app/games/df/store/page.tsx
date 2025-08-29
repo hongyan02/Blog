@@ -44,10 +44,7 @@ export default function Store() {
 
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 px-1 pb-3">
                     {data?.data?.map((item: GunCodeData) => (
-                        <GunCodeCard
-                            key={item.id}
-                            data={item}
-                        />
+                        <GunCodeCard key={item.id} data={item} />
                     ))}
                 </div>
             </div>
