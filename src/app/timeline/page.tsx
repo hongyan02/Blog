@@ -1,30 +1,41 @@
 import TimeLine from "@/components/Timeline/TimeLine";
+import { db } from "@/shared/db";
+import { timelines } from "@/db/schema";
+import { desc, isNull } from "drizzle-orm";
+import { decodeMD } from "@/features/md/lib/markdown";
 
-export default function TimeLinePage() {
-    const data = [
-        { date: "2023-01-01", title: "新年过好年", content: "新年快乐 🎉" },
-        {
-            date: "2023-03-05",
-            title: "学习 Tailwind",
-            content: "学习 Tailwind",
-            bilibiliUrl: "https://player.bilibili.com/player.html?bvid=BV1B7411m7LV",
-        },
-        { date: "2023-06-20", title: "写时间轴组件", content: "时间轴组件" },
-    ];
+export default async function TimeLinePage() {
+    // 直接在页面中查询数据库
+    const rows = await db
+        .select()
+        .from(timelines)
+        .where(isNull(timelines.deletedAt))
+        .orderBy(desc(timelines.eventDate));
+
+    // 解码 Markdown 内容
+    const data = await Promise.all(
+        rows.map(async (item) => ({
+            ...item,
+            content: await decodeMD(item.content),
+        }))
+    );
 
     return (
         <div className="grid-background min-h-screen p-3">
             <h1 className="text-4xl font-extrabold p-4">琐碎点滴</h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 p-4 pt-0">what's happend!</p>
-            {data.map((item, index) => (
+            {data.map((item) => (
                 <TimeLine
-                    key={index}
-                    date={item.date}
+                    key={item.id}
+                    date={item.eventDate}
                     title={item.title}
                     content={item.content}
-                    bilibiliUrl={item.bilibiliUrl}
+                    bvid={item.bvid || undefined}
                 />
             ))}
         </div>
     );
 }
+
+// ISR 配置：每小时重新验证一次
+export const revalidate = 3600;

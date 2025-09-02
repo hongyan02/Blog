@@ -9,6 +9,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             title: "邀请码",
             slug: "invite",
         },
+        {
+            title: "时间轴",
+            slug: "timeline",
+        },
     ];
 
     return (
@@ -18,8 +22,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
             <AuthProvider>
                 <main className="w-[80vw] h-full p-3 overflow-auto">
-                    {/*登录页和注册页不显示用户头*/}
-
                     <Providers>{children}</Providers>
                 </main>
             </AuthProvider>

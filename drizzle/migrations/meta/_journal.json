@@ -43,6 +43,13 @@
       "when": 1756279486430,
       "tag": "0005_noisy_mojo",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1756714234643,
+      "tag": "0006_shocking_puff_adder",
+      "breakpoints": true
     }
   ]
 }
