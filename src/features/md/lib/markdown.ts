@@ -15,3 +15,9 @@ export async function markdownToHtml(markdown: string) {
         .process(markdown);
     return String(file);
 }
+
+export async function decodeMD(content: string) {
+    // 把 Markdown 转成 HTML
+    const htmlContent = await markdownToHtml(content);
+    return htmlContent;
+}

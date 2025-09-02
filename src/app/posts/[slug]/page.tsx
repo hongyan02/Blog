@@ -52,3 +52,5 @@ export default async function PostPage({ params }: PageProps) {
         </article>
     );
 }
+
+export const revalidate = 3600;

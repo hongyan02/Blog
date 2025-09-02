@@ -4,6 +4,7 @@ import { InferSelectModel, sql } from "drizzle-orm";
 export type Invite = InferSelectModel<typeof invites>;
 export type WeaponBuild = InferSelectModel<typeof weaponBuilds>;
 export type User = InferSelectModel<typeof users>;
+export type Timeline = InferSelectModel<typeof timelines>;
 /* ========== 邀请码表 ========== */
 export const invites = pgTable(
     "invites",
@@ -92,3 +93,24 @@ export const weaponBuilds = pgTable(
         index("idx_weapon_builds_owner").on(table.ownerId),
     ]
 );
+
+/* ========== 时间轴表 ========== */
+export const timelines = pgTable("timelines", (t) => ({
+    // 事件唯一ID
+    id: t.uuid("id").defaultRandom().primaryKey(),
+
+    // 事件发生日期（显示在时间轴上的日期）
+    eventDate: t.date("event_date").notNull(),
+
+    // 事件标题
+    title: t.varchar("title", { length: 100 }).notNull(),
+
+    // 事件内容描述（支持Markdown格式）
+    content: t.text("content").notNull(),
+
+    //bvid
+    bvid: t.varchar("bvid", { length: 20 }),
+
+    //删除时间
+    deletedAt: t.date("deleted_at"),
+}));

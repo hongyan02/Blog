@@ -4,9 +4,12 @@ type Props = {
     date: string;
     title: string;
     content?: ReactElement | string;
-    bilibiliUrl?: string;
+    bvid?: string;
 };
 export default function TimeLine(item: Props) {
+    const bilibiliUrl = item.bvid
+        ? `https://player.bilibili.com/player.html?bvid=${item.bvid}&autoplay=0`
+        : undefined;
     return (
         <div className="flex flex-row mb-4">
             {/* 左侧时间点+中线 */}
@@ -23,13 +26,20 @@ export default function TimeLine(item: Props) {
             {/* 右侧内容 */}
             <div className="h-full pl-8">
                 <div className="font-bold text-3xl flex items-center">{item.title}</div>
-                {/* 普通文本内容 */}
-                <p className="text-lg">{item.content}</p>
+                {/* 渲染 Markdown 转换后的 HTML 内容 */}
+                {typeof item.content === "string" ? (
+                    <div
+                        className="prose dark:prose-invert max-w-none text-lg"
+                        dangerouslySetInnerHTML={{ __html: item.content }}
+                    />
+                ) : (
+                    <div className="text-lg">{item.content}</div>
+                )}
                 {/* B 站外链播放器 */}
-                {item.bilibiliUrl && (
+                {bilibiliUrl && (
                     <div className="mt-4 aspect-video w-full min-w-[600px] min-h-[500px]">
                         <iframe
-                            src={item.bilibiliUrl}
+                            src={bilibiliUrl}
                             allowFullScreen={true}
                             sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts allow-popups"
                             referrerPolicy="no-referrer"
