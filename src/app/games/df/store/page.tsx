@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useGunCodeQuery } from "@/queries/df/guncode";
-import { GunCodeCard, GunCodeData } from "@/shared/ui/df/GunCodeCard";
-import AddGunCodeForm from "@/shared/ui/df/AddCodeForm";
+import { GunCodeCard, GunCodeData } from "@/components/DF/GunCodeCard";
+import AddGunCodeForm from "@/components/DF/AddCodeForm";
 
 export default function Store() {
     const { data, isLoading, error } = useGunCodeQuery();

@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { validateUsername, validatePassword } from "@/shared/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/features/auth/components/AuthContext";
+import { useAuth } from "@/components/auth/AuthContext";
 import { encryptPassword } from "@/shared/crypto";
 
 type Inputs = {
@@ -28,7 +28,7 @@ export default function LoginForm() {
         try {
             // 加密密码后再发送
             const encryptedPassword = encryptPassword(data.password);
-            
+
             const res = await fetch("/api/v1/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -60,15 +60,9 @@ export default function LoginForm() {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 p-3 w-full"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-3 w-full">
             <div className="flex flex-col space-y-2">
-                <label
-                    htmlFor="username"
-                    className="text-lg font-medium"
-                >
+                <label htmlFor="username" className="text-lg font-medium">
                     用户名:
                 </label>
                 <input
@@ -87,10 +81,7 @@ export default function LoginForm() {
                 )}
             </div>
             <div className="flex flex-col space-y-2">
-                <label
-                    htmlFor="password"
-                    className="text-lg font-medium"
-                >
+                <label htmlFor="password" className="text-lg font-medium">
                     密码:
                 </label>
                 <input

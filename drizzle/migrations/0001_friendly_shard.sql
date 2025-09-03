@@ -1,2 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "role" smallint DEFAULT 0 NOT NULL;--> statement-breakpoint
-ALTER TABLE "users" ADD COLUMN "avatar" jsonb DEFAULT '{"accessory":"shades","body":"chest","circleColor":"blue","clothing":"naked","clothingColor":"blue","eyebrows":"angry","eyes":"wink","facialHair":"mediumBeard","graphic":"none","hair":"short","hairColor":"white","hat":"none3","hatColor":"white","lashes":false,"lipColor":"turqoise","mask":false,"faceMask":true,"mouth":"tongue","skinTone":"black"}'::jsonb NOT NULL;

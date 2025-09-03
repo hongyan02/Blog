@@ -1,5 +1,5 @@
 import { pgTable, index, jsonb } from "drizzle-orm/pg-core";
-import randomBeanHead, { BeanHeadProps } from "@/shared/avatar";
+import randomBeanHead, { BeanHeadProps } from "@/components/avatar";
 import { InferSelectModel, sql } from "drizzle-orm";
 export type Invite = InferSelectModel<typeof invites>;
 export type WeaponBuild = InferSelectModel<typeof weaponBuilds>;

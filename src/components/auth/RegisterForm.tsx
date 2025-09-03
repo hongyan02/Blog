@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { validateUsername, validatePassword } from "@/shared/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/features/auth/components/AuthContext";
+import { useAuth } from "@/components/auth/AuthContext";
 import { encryptPassword } from "@/shared/crypto";
 
 type Inputs = {

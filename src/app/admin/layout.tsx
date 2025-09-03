@@ -1,5 +1,5 @@
 import AnyBar from "@/features/sidebar/AnyBar";
-import { AuthProvider } from "@/features/auth/components/AuthContext";
+import { AuthProvider } from "@/components/auth/AuthContext";
 import { Providers } from "@/shared/providers";
 import AdminBarClient from "@/features/sidebar/ui/AdminBarClient";
 

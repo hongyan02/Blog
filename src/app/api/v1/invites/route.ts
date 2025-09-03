@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/shared/db";
-import { invites, users } from "@/db/schema";
+import { db } from "@/features/db/db";
+import { invites, users } from "@/features/db/schema";
 import { alias } from "drizzle-orm/pg-core";
 import { and, eq, isNull, desc } from "drizzle-orm";
 import { requireAuth } from "@/features/auth/auth";

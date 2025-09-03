@@ -1,4 +1,4 @@
-import { Footer } from "@/shared/ui/footer";
+import { Footer } from "@/shared/layout/Footer";
 
 export default function Home() {
     return (
