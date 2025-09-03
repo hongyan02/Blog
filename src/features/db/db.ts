@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as schema from "@/db/schema";
+import * as schema from "@/features/db/schema";
 
 import * as yaml from "js-yaml";
 import * as fs from "fs";

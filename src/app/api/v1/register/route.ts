@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { db } from "@/shared/db";
-import { users, invites } from "@/db/schema";
+import { db } from "@/features/db/db";
+import { users, invites } from "@/features/db/schema";
 import { eq, and, gt } from "drizzle-orm";
 import { validateUsername, validatePassword } from "@/shared/utils";
 import { signToken } from "@/features/auth/jwt";

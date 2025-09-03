@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { users } from "@/db/schema";
+import { users } from "@/features/db/schema";
 import { InferSelectModel } from "drizzle-orm";
 import { useRouter } from "next/navigation";
 

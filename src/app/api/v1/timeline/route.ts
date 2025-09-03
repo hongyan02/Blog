@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/shared/db";
-import { timelines } from "@/db/schema";
+import { db } from "@/features/db/db";
+import { timelines } from "@/features/db/schema";
 import { desc, isNull } from "drizzle-orm";
 import { requireAuth } from "@/features/auth/auth";
 

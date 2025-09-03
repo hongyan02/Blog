@@ -28,10 +28,7 @@ export default function AddCodeForm({ onClose }: { onClose?: () => void }) {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 p-3 w-full"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-3 w-full">
             <div className="flex flex-col space-y-2">
                 <label className="text-lg font-medium">枪械名称:</label>
                 <input
@@ -61,11 +58,7 @@ export default function AddCodeForm({ onClose }: { onClose?: () => void }) {
             </div>
 
             <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                    type="checkbox"
-                    className="w-5 h-5"
-                    {...register("isPublic")}
-                />
+                <input type="checkbox" className="w-5 h-5" {...register("isPublic")} />
                 <span className="text-lg font-medium">公开到首页</span>
             </label>
 

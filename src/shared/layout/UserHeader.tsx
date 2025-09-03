@@ -1,6 +1,6 @@
 "use client";
 import { BeanHead } from "beanheads";
-import { useAuth } from "@/features/auth/components/AuthContext";
+import { useAuth } from "@/components/auth/AuthContext";
 import Link from "next/link";
 import ExitIcon from "../icons/Exit";
 import { usePathname } from "next/navigation";

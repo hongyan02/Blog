@@ -1,6 +1,6 @@
 import TimeLine from "@/components/Timeline/TimeLine";
-import { db } from "@/shared/db";
-import { timelines } from "@/db/schema";
+import { db } from "@/features/db/db";
+import { timelines } from "@/features/db/schema";
 import { desc, isNull } from "drizzle-orm";
 import { decodeMD } from "@/features/md/lib/markdown";
 

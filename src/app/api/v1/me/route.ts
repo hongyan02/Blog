@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/features/auth/auth";
-import { db } from "@/shared/db";
+import { db } from "@/features/db/db";
 import { eq } from "drizzle-orm";
-import { users } from "@/db/schema";
+import { users } from "@/features/db/schema";
 
 export async function GET(req: NextRequest) {
     try {

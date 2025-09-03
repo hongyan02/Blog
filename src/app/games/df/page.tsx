@@ -1,6 +1,6 @@
 "use client";
 import { usePublicGunCodeQuery } from "@/queries/df/public/guncode";
-import { GunCodeCard, GunCodeData } from "@/shared/ui/df/GunCodeCard";
+import { GunCodeCard, GunCodeData } from "@/components/DF/GunCodeCard";
 
 export default function DF() {
     const { data, isLoading, error } = usePublicGunCodeQuery();

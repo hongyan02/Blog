@@ -1,8 +1,8 @@
 "use client";
 import AnyBar from "@/features/sidebar/AnyBar";
 import GameBarClient from "@/features/sidebar/ui/GameBarClient";
-import { AuthProvider } from "@/features/auth/components/AuthContext";
-import { UserHeader } from "@/shared/ui/UserHeader";
+import { AuthProvider } from "@/components/auth/AuthContext";
+import { UserHeader } from "@/shared/layout/UserHeader";
 import { usePathname } from "next/navigation";
 import { Providers } from "@/shared/providers";
 
