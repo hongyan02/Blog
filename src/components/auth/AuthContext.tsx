@@ -1,29 +1,68 @@
 "use client";
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { users } from "@/features/db/schema";
-import { InferSelectModel } from "drizzle-orm";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-export type User = Pick<InferSelectModel<typeof users>, "id" | "username" | "role" | "avatar">;
+export interface UserCookieData {
+    id: string;
+    username: string;
+    avatar: any;
+    role: number;
+}
 
 interface AuthContextType {
-    user: User | null;
+    user: UserCookieData | null;
     loading: boolean;
-    login: (userData: User) => void;
+    login: (userData: UserCookieData) => void;
     logout: () => void;
+    refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserCookieData | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
-    // 页面刷新时自动获取用户信息
+
+    // 只保留cookie读取方法
+    const getUserFromCookie = useCallback((): UserCookieData | null => {
+        if (typeof window === "undefined") return null;
+
+        try {
+            const cookieValue = document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("user_info="))
+                ?.split("=")[1];
+
+            if (!cookieValue) return null;
+
+            const decodedValue = decodeURIComponent(cookieValue);
+            const userData: UserCookieData = JSON.parse(decodedValue);
+
+            if (!userData.id || !userData.username) {
+                return null;
+            }
+
+            return userData;
+        } catch (error) {
+            console.warn("解析用户cookie失败:", error);
+            return null;
+        }
+    }, []);
+
+    // 初始化用户状态
     useEffect(() => {
-        const fetchUser = async () => {
+        const initUser = async () => {
+            const cookieUser = getUserFromCookie();
+
+            if (cookieUser) {
+                setUser(cookieUser);
+                setLoading(false);
+                return;
+            }
+
             try {
-                const res = await fetch("/api/v1/me"); // cookie 会自动带上
+                const res = await fetch("/api/v1/me");
                 if (res.ok) {
                     const data = await res.json();
                     setUser(data.user);
@@ -36,26 +75,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setLoading(false);
             }
         };
-        fetchUser();
+
+        initUser();
+    }, [getUserFromCookie]);
+
+    // 登录 - 直接设置用户信息，cookie由API处理
+    const login = useCallback((userData: UserCookieData) => {
+        setUser(userData);
     }, []);
 
-    // 前端登录时手动设置 user
-    const login = (userData: User) => {
-        setUser(userData);
-    };
-
-    // 前端登出
-    const logout = async () => {
+    // 登出 - 只清除本地状态，cookie由API处理
+    const logout = useCallback(async () => {
         setUser(null);
-        const res = await fetch("/api/v1/logout", { method: "POST" }); // 清 cookie
-        if (res.ok) {
-            // 登出成功
+
+        try {
+            await fetch("/api/v1/logout", { method: "POST" });
             router.push("/games");
+        } catch {
+            router.push("/auth/login");
         }
-    };
+    }, [router]);
+
+    // 刷新用户信息
+    const refreshUser = useCallback(async () => {
+        try {
+            const res = await fetch("/api/v1/me");
+            if (res.ok) {
+                const data = await res.json();
+                setUser(data.user);
+            } else {
+                setUser(null);
+            }
+        } catch {
+            setUser(null);
+        }
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
             {children}
         </AuthContext.Provider>
     );

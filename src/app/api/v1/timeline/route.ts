@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/features/db/db";
 import { timelines } from "@/features/db/schema";
 import { desc, isNull } from "drizzle-orm";
-import { requireAuth } from "@/features/auth/auth";
+import { getUser } from "@/features/auth/session";
 
 export async function GET() {
     const rows = await db
@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "缺少内容" }, { status: 400 });
     }
 
-    const user = requireAuth(req);
-    if (!user) {
+    const user = await getUser();
+    if (!user || user === null) {
         return NextResponse.json({ error: "未登录或 token 无效" }, { status: 401 });
     }
     if (user.role !== 1) {

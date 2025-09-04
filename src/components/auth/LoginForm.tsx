@@ -19,7 +19,7 @@ export default function LoginForm() {
     } = useForm<Inputs>();
 
     const router = useRouter();
-    const { login } = useAuth();
+    const { refreshUser } = useAuth();
     const [serverError, setServerError] = useState("");
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -46,10 +46,9 @@ export default function LoginForm() {
             }
 
             console.log("登录成功", result);
-            alert(`欢迎回来，${result.user.username}`);
 
-            // 更新AuthContext状态
-            login(result.user);
+            // 登录成功后，刷新用户信息（从cookie中读取）
+            await refreshUser();
 
             // 登录成功后，跳转到游戏页面
             router.push("/games");

@@ -4,7 +4,7 @@ import { db } from "@/features/db/db";
 import { users, invites } from "@/features/db/schema";
 import { eq, and, gt } from "drizzle-orm";
 import { validateUsername, validatePassword } from "@/shared/utils";
-import { signToken } from "@/features/auth/jwt";
+import { createSession } from "@/features/auth/session";
 import { decryptPassword } from "@/shared/crypto";
 
 export async function POST(req: NextRequest) {
@@ -64,16 +64,32 @@ export async function POST(req: NextRequest) {
         .set({ used: true, usedBy: user.id })
         .where(eq(invites.code, inviteCode));
 
-    // 5. 生成 JWT
-    const token = signToken({ userId: user.id, username: user.username, role: user.role });
+    // 5. 生成 session
+    const token = await createSession(user.id);
 
-    return NextResponse.json(
-        { user: { id: user.id, username: user.username, role: user.role, avatar: user.avatar } },
-        {
-            status: 200,
-            headers: {
-                "Set-Cookie": `token=${token}; HttpOnly; Path=/; Max-Age=604800`, // 7天
-            },
-        }
-    );
+    const res = NextResponse.json({ message: "登录成功" });
+    res.cookies.set("session", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 天
+    });
+
+    const userInfo = {
+        id: user.id,
+        username: user.username,
+        avatar: user.avatar,
+        role: user.role,
+    };
+    //设置用户信息cookie
+    res.cookies.set("user_info", JSON.stringify(userInfo), {
+        httpOnly: false, // 允许前端读取
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 天
+    });
+
+    return res;
 }

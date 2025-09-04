@@ -1,3 +1,4 @@
+"use client";
 import CopyIcon from "@/shared/icons/Copy";
 import CrossIcon from "@/shared/icons/Cross";
 import { BeanHead } from "beanheads";
@@ -11,7 +12,7 @@ export type GunCodeData = {
     gunCode: string;
     description: string;
     isPublic: boolean;
-    createdAt: string;
+    createdAt: Date;
     username: string;
     avatar: BeanHeadProps;
 };
