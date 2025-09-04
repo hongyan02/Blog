@@ -1,10 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/features/db/db";
-import { and, eq, isNull, desc } from "drizzle-orm";
 import { weaponBuilds, users } from "@/features/db/schema";
-import { getUser } from "@/features/auth/session";
+import type { WeaponBuild } from "@/features/db/schema";
+import { BeanHeadProps } from "@/components/avatar";
+import { and, eq, isNull, desc } from "drizzle-orm";
 
-export async function GET() {
+export type PublicGunCode = WeaponBuild & {
+    username: string;
+    avatar: BeanHeadProps;
+};
+export async function getPublicGunCodes(): Promise<PublicGunCode[]> {
     const rows = await db
         .select({
             id: weaponBuilds.id,
@@ -20,5 +24,5 @@ export async function GET() {
         .where(and(eq(weaponBuilds.isPublic, true), isNull(weaponBuilds.deletedAt)))
         .orderBy(desc(weaponBuilds.createdAt));
 
-    return NextResponse.json({ data: rows });
+    return rows as PublicGunCode[];
 }

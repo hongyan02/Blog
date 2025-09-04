@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useGunCodeQuery } from "@/queries/df/guncode";
 import { GunCodeCard, GunCodeData } from "@/components/DF/GunCodeCard";
 import AddGunCodeForm from "@/components/DF/AddCodeForm";
+import { UserHeader } from "@/shared/layout/UserHeader";
 
 export default function Store() {
     const { data, isLoading, error } = useGunCodeQuery();
@@ -13,6 +14,7 @@ export default function Store() {
 
     return (
         <div className="w-full flex items-center justify-center">
+            <UserHeader />
             <div className="border-2 border-black/50 m-3 w-full rounded-md">
                 <div className="w-full flex items-center justify-between">
                     <h1 className="text-2xl font-medium text-black p-3">我的抛瓦！！</h1>

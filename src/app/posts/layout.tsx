@@ -1,5 +1,5 @@
-import PostBarClient from "@/features/sidebar/ui/PostBarClient";
-import AnyBar from "@/features/sidebar/AnyBar";
+import PostBarClient from "@/components/sidebar/ui/PostBarClient";
+import AnyBar from "@/components/sidebar/AnyBar";
 import { getAllPosts } from "@/features/md/lib/posts";
 
 export default function PostsLayout({ children }: { children: React.ReactNode }) {

@@ -1,0 +1,3 @@
+ALTER TABLE "sessions" ALTER COLUMN "last_verified_at" SET DATA TYPE timestamp with time zone;--> statement-breakpoint
+ALTER TABLE "sessions" ALTER COLUMN "created_at" SET DATA TYPE timestamp with time zone;--> statement-breakpoint
+ALTER TABLE "users" ALTER COLUMN "avatar" SET DEFAULT '{"accessory":"tinyGlasses","body":"chest","circleColor":"blue","clothing":"dressShirt","clothingColor":"white","eyebrows":"raised","eyes":"simple","facialHair":"none2","graphic":"none","hair":"buzz","hairColor":"black","hat":"beanie","hatColor":"black","lashes":true,"lipColor":"pink","mask":false,"faceMask":true,"mouth":"tongue","skinTone":"yellow"}'::jsonb;

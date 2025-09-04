@@ -22,7 +22,7 @@ export default function RegisterForm() {
     } = useForm<Inputs>();
 
     const router = useRouter();
-    const { login } = useAuth();
+    const { refreshUser } = useAuth();
     const [serverError, setServerError] = useState("");
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -55,10 +55,9 @@ export default function RegisterForm() {
             }
 
             console.log("注册成功", result);
-            alert(`注册成功，欢迎 ${result.user.username}`);
 
-            // 更新AuthContext状态
-            login(result.user);
+            // 注册成功后，刷新用户信息（从cookie中读取）
+            await refreshUser();
 
             // 注册成功后，跳转到游戏页面
             router.push("/games");

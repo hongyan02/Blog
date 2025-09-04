@@ -1,10 +1,14 @@
-import { pgTable, index, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, index, jsonb, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import randomBeanHead, { BeanHeadProps } from "@/components/avatar";
 import { InferSelectModel, sql } from "drizzle-orm";
+
+// 导出类型
 export type Invite = InferSelectModel<typeof invites>;
+export type Session = InferSelectModel<typeof sessions>;
 export type WeaponBuild = InferSelectModel<typeof weaponBuilds>;
 export type User = InferSelectModel<typeof users>;
 export type Timeline = InferSelectModel<typeof timelines>;
+
 /* ========== 邀请码表 ========== */
 export const invites = pgTable(
     "invites",
@@ -18,11 +22,10 @@ export const invites = pgTable(
         // 使用此邀请码注册成功的用户 id（外键到 users.id）
         usedBy: t.uuid("used_by"),
         // 邀请码生成时间
-        createdAt: t.timestamp("created_at").defaultNow().notNull(),
+        createdAt: t.timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
         // 邀请码过期时间，过期后不可再用于注册
-        // expiresAt: t.timestamp("expires_at").notNull(),
         expiresAt: t
-            .timestamp("expires_at")
+            .timestamp("expires_at", { withTimezone: true })
             .default(sql`(now() + interval '3 days')`)
             .notNull(),
     }),
@@ -31,6 +34,18 @@ export const invites = pgTable(
         index("idx_invites_available").on(table.code),
     ]
 );
+
+/* ========== session表 ========== */
+export const sessions = pgTable("sessions", (t) => ({
+    id: text("id").primaryKey(),
+    // 关联到用户
+    userId: uuid("user_id")
+        .references(() => users.id, { onDelete: "cascade" })
+        .notNull(),
+    secretHash: text("secret_hash").notNull(),
+    lastVerifiedAt: timestamp("last_verified_at", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+}));
 
 /* ========== 用户表 ========== */
 export const users = pgTable(
@@ -47,7 +62,7 @@ export const users = pgTable(
             .char("invite_code", { length: 16 })
             .references(() => invites.code, { onDelete: "set null" }),
         // 账号创建时间
-        createdAt: t.timestamp("created_at").defaultNow().notNull(),
+        createdAt: t.timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
         // 账号状态：0 正常，1 冻结，2 注销
         status: t.smallint("status").default(0).notNull(),
         // 账号角色：0 普通用户，1 管理员

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import "./globals.css";
-import SideBar from "@/features/sidebar/ui/SideBar";
+import SideBar from "@/components/sidebar/ui/SideBar";
 
 export const metadata: Metadata = {
     title: "AgCl",

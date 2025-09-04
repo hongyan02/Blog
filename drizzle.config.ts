@@ -16,7 +16,7 @@ const { host, port, database, user, password } = config.database;
 const dbUrl = `postgres://${user}:${password}@${host}:${port}/${database}`;
 
 export default defineConfig({
-    schema: "./src/db/schema.ts",
+    schema: "./src/features/db/schema.ts",
     out: "./drizzle/migrations",
     dialect: "postgresql",
     dbCredentials: {

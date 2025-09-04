@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/features/auth/auth";
-import { db } from "@/features/db/db";
-import { eq } from "drizzle-orm";
-import { users } from "@/features/db/schema";
+import { getUser } from "@/features/auth/session";
 
 export async function GET(req: NextRequest) {
     try {
-        const payload = requireAuth(req);
-        if (!payload) throw new Error("未登录");
-        const { userId } = payload;
-
-        const [user] = await db.select().from(users).where(eq(users.id, userId));
-        if (!user) throw new Error("用户不存在");
+        const user = await getUser();
+        if (!user) {
+            return NextResponse.json({ error: "未登录" }, { status: 401 });
+        }
 
         return NextResponse.json({
             user: {
@@ -23,6 +18,6 @@ export async function GET(req: NextRequest) {
             },
         });
     } catch (err) {
-        return NextResponse.json({ error: (err as Error).message }, { status: 401 });
+        return NextResponse.json({ error: (err as Error).message }, { status: 500 });
     }
 }

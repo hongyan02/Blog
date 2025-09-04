@@ -3,8 +3,8 @@ import { db } from "@/features/db/db";
 import { invites, users } from "@/features/db/schema";
 import { alias } from "drizzle-orm/pg-core";
 import { and, eq, isNull, desc } from "drizzle-orm";
-import { requireAuth } from "@/features/auth/auth";
 import { toZonedTime } from "date-fns-tz";
+import { getUser } from "@/features/auth/session";
 
 // Base58 字符集（排除 0 O I l）
 const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -20,8 +20,8 @@ const usedUser = alias(users, "usedUser");
 export async function POST(req: NextRequest) {
     try {
         // ✅ 检查用户身份
-        const user = requireAuth(req);
-        if (!user) {
+        const user = await getUser();
+        if (!user || user === null) {
             return NextResponse.json({ error: "未登录或 token 无效" }, { status: 401 });
         }
         if (user.role !== 1) {
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
             codes.map((code) => ({
                 code,
                 expiresAt: expiresAtBJ,
-                creator: creator.userId,
+                creator: creator.id,
             }))
         );
 
@@ -61,8 +61,8 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     try {
         // ✅ 检查用户身份
-        const user = requireAuth(req);
-        if (!user) {
+        const user = await getUser();
+        if (!user || user === null) {
             return NextResponse.json({ error: "未登录或 token 无效" }, { status: 401 });
         }
         if (user.role !== 1) {
