@@ -6,7 +6,6 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
-import { ReactNodeViewRenderer, NodeViewWrapper } from "@tiptap/react";
 
 import {
     Bold,
@@ -64,144 +63,6 @@ export default function MarkdownEditor({
 }: MarkdownEditorProps) {
     const [, forceUpdate] = useState({});
 
-    // 自定义图片组件
-    const ImageComponent = ({ node, updateAttributes, selected }: any) => {
-        const [showControls, setShowControls] = useState(false);
-        const { src, alt, title, width, style } = node.attrs;
-
-        const handleSizeChange = (newWidth: string) => {
-            const newStyle = `width: ${newWidth}px; height: auto;`;
-            updateAttributes({
-                width: parseInt(newWidth),
-                style: newStyle
-            });
-        };
-
-        const handleAlignChange = (align: string) => {
-            let newStyle = style || 'max-width: 100%; height: auto;';
-            
-            switch (align) {
-                case 'left':
-                    newStyle += ' float: left; margin: 0 10px 10px 0;';
-                    break;
-                case 'center':
-                    newStyle += ' display: block; margin: 0 auto;';
-                    break;
-                case 'right':
-                    newStyle += ' float: right; margin: 0 0 10px 10px;';
-                    break;
-                case 'inline':
-                    newStyle += ' display: inline-block; margin: 0 5px;';
-                    break;
-            }
-            
-            updateAttributes({ style: newStyle });
-        };
-
-        return (
-            <NodeViewWrapper className="relative inline-block">
-                <div 
-                    className={`relative group ${
-                        selected ? 'ring-2 ring-blue-500' : ''
-                    }`}
-                    onMouseEnter={() => setShowControls(true)}
-                    onMouseLeave={() => setShowControls(false)}
-                >
-                    <img
-                        src={src}
-                        alt={alt || ''}
-                        title={title || ''}
-                        style={{
-                            maxWidth: '100%',
-                            height: 'auto',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            ...(() => {
-                                if (style) {
-                                    const styleObj: any = {};
-                                    style.split(';').forEach((s: string) => {
-                                        const [key, value] = s.split(':').map((str: string) => str.trim());
-                                        if (key && value) {
-                                            const camelKey = key.replace(/-([a-z])/g, (g: string) => g[1].toUpperCase());
-                                            styleObj[camelKey] = value;
-                                        }
-                                    });
-                                    return styleObj;
-                                }
-                                return {};
-                            })()
-                        }}
-                    />
-                    
-                    {/* 悬浮控制按钮 */}
-                    {showControls && (
-                        <div className="absolute top-2 right-2 bg-black bg-opacity-75 rounded-lg p-2 flex gap-1">
-                            {/* 尺寸按钮 */}
-                            <button
-                                className="p-1 text-white hover:bg-gray-600 rounded"
-                                onClick={() => handleSizeChange('200')}
-                                title="小图 (200px)"
-                            >
-                                <span className="text-xs">S</span>
-                            </button>
-                            <button
-                                className="p-1 text-white hover:bg-gray-600 rounded"
-                                onClick={() => handleSizeChange('400')}
-                                title="中图 (400px)"
-                            >
-                                <span className="text-xs">M</span>
-                            </button>
-                            <button
-                                className="p-1 text-white hover:bg-gray-600 rounded"
-                                onClick={() => handleSizeChange('600')}
-                                title="大图 (600px)"
-                            >
-                                <span className="text-xs">L</span>
-                            </button>
-                            
-                            {/* 对齐按钮 */}
-                            <button
-                                className="p-1 text-white hover:bg-gray-600 rounded"
-                                onClick={() => handleAlignChange('left')}
-                                title="左对齐"
-                            >
-                                <span className="text-xs">←</span>
-                            </button>
-                            <button
-                                className="p-1 text-white hover:bg-gray-600 rounded"
-                                onClick={() => handleAlignChange('center')}
-                                title="居中"
-                            >
-                                <span className="text-xs">↕</span>
-                            </button>
-                            <button
-                                className="p-1 text-white hover:bg-gray-600 rounded"
-                                onClick={() => handleAlignChange('right')}
-                                title="右对齐"
-                            >
-                                <span className="text-xs">→</span>
-                            </button>
-                            <button
-                                className="p-1 text-white hover:bg-gray-600 rounded"
-                                onClick={() => handleAlignChange('inline')}
-                                title="并排显示"
-                            >
-                                <span className="text-xs">↔</span>
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </NodeViewWrapper>
-        );
-    };
-
-    // 自定义图片扩展
-    const CustomImage = Image.extend({
-        addNodeView() {
-            return ReactNodeViewRenderer(ImageComponent);
-        },
-    });
-
     // 处理插入图片URL
     const handleImageUpload = () => {
         const imageUrl = prompt("请输入图片URL地址:");
@@ -228,7 +89,7 @@ export default function MarkdownEditor({
                 placeholder: "开始写作...",
             }),
             Markdown,
-            CustomImage.configure({
+            Image.configure({
                 inline: true,
                 allowBase64: true,
             }),
