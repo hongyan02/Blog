@@ -2,6 +2,7 @@
 
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import MarkdownEditor from "@/components/tiptap";
 
 type Inputs = {
@@ -20,6 +21,7 @@ export default function TimelineForm() {
     } = useForm<Inputs>();
 
     const [serverError, setServerError] = useState("");
+    const router = useRouter();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         setServerError("");
@@ -44,6 +46,9 @@ export default function TimelineForm() {
 
             console.log("提交成功", result);
             alert("时间线已保存 ✅");
+
+            // 跳转到时间轴页面
+            router.push("/timeline");
         } catch (err) {
             console.error(err);
             setServerError("网络错误，请稍后再试");
