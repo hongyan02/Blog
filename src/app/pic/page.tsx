@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
     const files = await getCosFiles("wallpaper/");
-    const bucketUrl = "https://agcl.space";
+    const bucketUrl = "https://pic.agcl.ink";
 
     return (
         <main className="grid-background min-h-screen bg-gray-100 p-6">
