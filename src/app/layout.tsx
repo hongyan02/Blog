@@ -27,7 +27,7 @@ export default function RootLayout({
                             className="rounded-full border-1 border-black"
                         />
                         <p className="text-black text-2xl">AgCl</p>
-                        <p className="text-black text-sm">世界以痛吻我，要我报之以歌</p>
+                        {/* <p className="text-black text-sm">世界以痛吻我，要我报之以歌</p> */}
                     </div>
 
                     <SideBar />
