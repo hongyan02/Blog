@@ -1,11 +1,12 @@
 "use client";
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { BeanHeadProps } from "../avatar";
 
 export interface UserCookieData {
     id: string;
     username: string;
-    avatar: any;
+    avatar: BeanHeadProps;
     role: number;
 }
 

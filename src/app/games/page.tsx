@@ -2,7 +2,7 @@
 import { useAuth } from "@/components/auth/AuthContext";
 import { UserHeader } from "@/shared/layout/UserHeader";
 export default function Page() {
-    const { user, loading, login, logout, refreshUser } = useAuth();
+    const { user, loading } = useAuth();
     return (
         <div>
             <header className="p-3">

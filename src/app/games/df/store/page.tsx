@@ -4,18 +4,20 @@ import { useGunCodeQuery } from "@/queries/df/guncode";
 import { GunCodeCard, GunCodeData } from "@/components/DF/GunCodeCard";
 import AddGunCodeForm from "@/components/DF/AddCodeForm";
 import { UserHeader } from "@/shared/layout/UserHeader";
+import { useAuth } from "@/components/auth/AuthContext";
 
 export default function Store() {
     const { data, isLoading, error } = useGunCodeQuery();
     const [showForm, setShowForm] = useState(false);
+    const { user } = useAuth();
 
     if (isLoading) return <p>寻找抛瓦中...</p>;
     if (error) return <p>抛瓦不见了：{error.message}</p>;
 
     return (
         <div className="w-full flex items-center justify-center">
-            <UserHeader />
             <div className="border-2 border-black/50 m-3 w-full rounded-md">
+                <UserHeader user={user} />
                 <div className="w-full flex items-center justify-between">
                     <h1 className="text-2xl font-medium text-black p-3">我的抛瓦！！</h1>
                     <button

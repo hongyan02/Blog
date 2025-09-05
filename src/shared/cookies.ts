@@ -1,7 +1,8 @@
+import { BeanHeadProps } from "@/components/avatar";
 interface UserCookieData {
     id: string;
     username: string;
-    avatar: any;
+    avatar: BeanHeadProps;
     role: number;
 }
 
