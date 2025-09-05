@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getUser } from "@/features/auth/session";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
         const user = await getUser();
         if (!user) {

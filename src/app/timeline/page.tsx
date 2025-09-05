@@ -23,7 +23,9 @@ export default async function TimeLinePage() {
     return (
         <div className="grid-background min-h-screen p-3">
             <h1 className="text-4xl font-extrabold p-4">琐碎点滴</h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 p-4 pt-0">what's happend!</p>
+            <p className="text-xl text-gray-600 dark:text-gray-400 p-4 pt-0">
+                what&apos;s happend!
+            </p>
             {data.map((item) => (
                 <TimeLine
                     key={item.id}

@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { db } from "@/features/db/db";
 import { and, eq, isNull, desc } from "drizzle-orm";
 import { weaponBuilds, users } from "@/features/db/schema";
-import { getUser } from "@/features/auth/session";
 
 export async function GET() {
     const rows = await db

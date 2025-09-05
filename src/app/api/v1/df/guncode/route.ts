@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
         // 1. 身份校验
         const user = await getUser();

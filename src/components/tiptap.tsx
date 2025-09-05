@@ -10,7 +10,6 @@ import {
     Italic,
     Strikethrough,
     Code,
-    Underline as UnderlineIcon,
     List,
     ListOrdered,
     Quote,
@@ -58,7 +57,6 @@ interface MarkdownEditorProps {
 export default function MarkdownEditor({
     content = "# Hello Tiptap Markdown\n\n**你好，Markdown！**",
     onChange,
-    placeholder = "开始写作...",
 }: MarkdownEditorProps) {
     const [, forceUpdate] = useState({});
 
@@ -77,7 +75,8 @@ export default function MarkdownEditor({
         content,
         immediatelyRender: false,
         onUpdate: ({ editor }) => {
-            const markdown = (editor.storage as any).markdown.getMarkdown();
+            const storage = editor.storage as { markdown?: { getMarkdown(): string } };
+            const markdown = storage.markdown?.getMarkdown() || "";
             onChange?.(markdown);
         },
         onSelectionUpdate: () => forceUpdate({}),

@@ -36,7 +36,7 @@ export const invites = pgTable(
 );
 
 /* ========== session表 ========== */
-export const sessions = pgTable("sessions", (t) => ({
+export const sessions = pgTable("sessions", () => ({
     id: text("id").primaryKey(),
     // 关联到用户
     userId: uuid("user_id")

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import { getUser } from "@/features/auth/session";
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;

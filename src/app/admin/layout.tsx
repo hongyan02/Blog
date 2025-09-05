@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import AnyBar from "@/components/sidebar/AnyBar";
+import { BeanHeadProps } from "@/components/avatar";
 import { AuthProvider } from "@/components/auth/AuthContext";
 import { Providers } from "@/shared/providers";
 import AdminBarClient from "@/components/sidebar/ui/AdminBarClient";
@@ -8,7 +9,7 @@ import AdminBarClient from "@/components/sidebar/ui/AdminBarClient";
 interface UserCookieData {
     id: string;
     username: string;
-    avatar: any;
+    avatar: BeanHeadProps;
     role: number;
 }
 

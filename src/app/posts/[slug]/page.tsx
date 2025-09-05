@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             description: post.frontmatter.description || `阅读文章: ${post.frontmatter.title}`,
             icons: "/favicon.ico",
         };
-    } catch (error) {
+    } catch {
         return {
             title: decodedSlug,
             description: "AgCl's blog",

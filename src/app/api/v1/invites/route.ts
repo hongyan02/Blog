@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/features/db/db";
 import { invites, users } from "@/features/db/schema";
 import { alias } from "drizzle-orm/pg-core";
-import { and, eq, isNull, desc } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { toZonedTime } from "date-fns-tz";
 import { getUser } from "@/features/auth/session";
 
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
         // ✅ 检查用户身份
         const user = await getUser();

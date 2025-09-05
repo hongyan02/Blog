@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     let decryptedPassword: string;
     try {
         decryptedPassword = decryptPassword(password);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "密码格式错误" }, { status: 400 });
     }
 
