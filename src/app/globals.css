@@ -64,3 +64,26 @@ pre {
         background-size: 40px 40px; /* 每格宽高 */
     }
 }
+
+/* 轮播图骨架屏动画 */
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-shimmer {
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* 轮播图样式优化 */
+.image-carousel-container {
+    @apply w-full my-4;
+}
+
+.carousel-placeholder {
+    @apply w-full aspect-video rounded-lg;
+}

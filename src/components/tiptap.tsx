@@ -34,6 +34,7 @@ interface ToolbarButtonProps {
 function ToolbarButton({ onClick, isActive, disabled, children, title }: ToolbarButtonProps) {
     return (
         <button
+            type="button"
             onClick={onClick}
             disabled={disabled}
             title={title}
@@ -64,7 +65,11 @@ export default function MarkdownEditor({
     const [, forceUpdate] = useState({});
 
     // 处理插入图片URL
-    const handleImageUpload = () => {
+    const handleImageUpload = (e?: React.MouseEvent) => {
+        // 阻止事件冒泡和默认行为
+        e?.preventDefault();
+        e?.stopPropagation();
+
         const imageUrl = prompt("请输入图片URL地址:");
         if (imageUrl && imageUrl.trim()) {
             // 验证URL格式
