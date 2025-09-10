@@ -2,6 +2,12 @@ import { getCosFiles } from "@/shared/cos";
 import Image from "next/image";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "WallPaper",
+    description: "AgCl's blog WallPaperPage",
+};
 
 export const dynamic = "force-dynamic";
 

@@ -1,6 +1,12 @@
 import PostBarClient from "@/components/sidebar/ui/PostBarClient";
 import AnyBar from "@/components/sidebar/AnyBar";
 import { getAllPosts } from "@/features/md/lib/posts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "AgCl | Posts",
+    description: "AgCl's blog PostPage",
+};
 
 export default function PostsLayout({ children }: { children: React.ReactNode }) {
     const posts = getAllPosts();

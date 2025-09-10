@@ -3,6 +3,12 @@ import { db } from "@/features/db/db";
 import { timelines } from "@/features/db/schema";
 import { desc, isNull } from "drizzle-orm";
 import { decodeMD } from "@/features/md/lib/markdown";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "TimeLine",
+    description: "AgCl's blog TimeLine Page",
+};
 
 export default async function TimeLinePage() {
     // 直接在页面中查询数据库

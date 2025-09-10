@@ -1,4 +1,10 @@
 import { Footer } from "@/shared/layout/Footer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "AgCl",
+    description: "AgCl's blog HomePage",
+};
 
 export default function Home() {
     return (
