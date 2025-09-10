@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 interface ImageData {
     src: string;
@@ -53,35 +54,17 @@ export default function ImageCarousel({
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
     const [isLoading, setIsLoading] = useState(true);
-    const [imageHeights, setImageHeights] = useState<number[]>([]);
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
-
-    // 如果只有一张图片，不显示轮播功能
-    if (images.length <= 1) {
-        return (
-            <div className={`relative w-full ${className}`}>
-                {images.length === 1 ? (
-                    <img
-                        src={images[0].src}
-                        alt={images[0].alt || ""}
-                        className="w-full h-auto rounded-lg object-contain"
-                        style={{ maxHeight: preserveAspectRatio ? maxHeight : "auto" }}
-                        onLoad={() => setIsLoading(false)}
-                        onError={() => setIsLoading(false)}
-                    />
-                ) : null}
-                {isLoading && <CarouselSkeleton maxHeight={maxHeight} />}
-            </div>
-        );
-    }
 
     // 预加载图片
     const preloadImage = useCallback(
         (index: number) => {
             if (loadedImages.has(index)) return;
 
-            const img = new Image();
+            const img = new window.Image();
             img.onload = () => {
                 setLoadedImages((prev) => new Set(prev).add(index));
                 if (index === 0 && isLoading) {
@@ -99,17 +82,9 @@ export default function ImageCarousel({
         [images, loadedImages, isLoading]
     );
 
-    // 初始化预加载
-    useEffect(() => {
-        // 预加载当前图片和相邻图片
-        preloadImage(currentIndex);
-        if (currentIndex > 0) preloadImage(currentIndex - 1);
-        if (currentIndex < images.length - 1) preloadImage(currentIndex + 1);
-    }, [currentIndex, preloadImage]);
-
     // 自动播放逻辑
     const startAutoPlay = useCallback(() => {
-        if (!autoPlay) return;
+        if (!autoPlay || images.length <= 1) return;
         autoPlayRef.current = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % images.length);
         }, autoPlayInterval);
@@ -121,34 +96,47 @@ export default function ImageCarousel({
         }
     }, []);
 
-    useEffect(() => {
-        startAutoPlay();
-        return () => stopAutoPlay();
-    }, [startAutoPlay, stopAutoPlay]);
-
     // 导航函数
     const goToSlide = useCallback(
         (index: number) => {
-            if (isTransitioning) return;
+            if (isTransitioning || images.length <= 1) return;
             setIsTransitioning(true);
             setCurrentIndex(index);
             setTimeout(() => setIsTransitioning(false), 300);
         },
-        [isTransitioning]
+        [isTransitioning, images.length]
     );
 
     const goToPrevious = useCallback(() => {
+        if (images.length <= 1) return;
         const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
         goToSlide(newIndex);
     }, [currentIndex, images.length, goToSlide]);
 
     const goToNext = useCallback(() => {
+        if (images.length <= 1) return;
         const newIndex = (currentIndex + 1) % images.length;
         goToSlide(newIndex);
     }, [currentIndex, images.length, goToSlide]);
 
+    // 初始化预加载
+    useEffect(() => {
+        if (images.length <= 1) return;
+        // 预加载当前图片和相邻图片
+        preloadImage(currentIndex);
+        if (currentIndex > 0) preloadImage(currentIndex - 1);
+        if (currentIndex < images.length - 1) preloadImage(currentIndex + 1);
+    }, [currentIndex, preloadImage, images.length]);
+
+    useEffect(() => {
+        if (images.length <= 1) return;
+        startAutoPlay();
+        return () => stopAutoPlay();
+    }, [startAutoPlay, stopAutoPlay, images.length]);
+
     // 键盘导航
     useEffect(() => {
+        if (images.length <= 1) return;
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === "ArrowLeft") {
                 event.preventDefault();
@@ -164,23 +152,22 @@ export default function ImageCarousel({
             container.addEventListener("keydown", handleKeyDown);
             return () => container.removeEventListener("keydown", handleKeyDown);
         }
-    }, [goToPrevious, goToNext]);
+    }, [goToPrevious, goToNext, images.length]);
 
-    // 触摸支持
-    const [touchStart, setTouchStart] = useState<number | null>(null);
-    const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
+    // 触摸处理函数
     const handleTouchStart = (e: React.TouchEvent) => {
+        if (images.length <= 1) return;
         setTouchEnd(null);
         setTouchStart(e.targetTouches[0].clientX);
     };
 
     const handleTouchMove = (e: React.TouchEvent) => {
+        if (images.length <= 1) return;
         setTouchEnd(e.targetTouches[0].clientX);
     };
 
     const handleTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
+        if (images.length <= 1 || !touchStart || !touchEnd) return;
         const distance = touchStart - touchEnd;
         const isLeftSwipe = distance > 50;
         const isRightSwipe = distance < -50;
@@ -191,6 +178,28 @@ export default function ImageCarousel({
             goToPrevious();
         }
     };
+
+    // 如果只有一张图片或没有图片，不显示轮播功能
+    if (images.length <= 1) {
+        return (
+            <div className={`relative w-full ${className}`}>
+                {images.length === 1 ? (
+                    <Image
+                        src={images[0].src}
+                        alt={images[0].alt || ""}
+                        width={800}
+                        height={600}
+                        className="w-full h-auto rounded-lg object-contain"
+                        style={{ maxHeight: preserveAspectRatio ? maxHeight : "auto" }}
+                        onLoad={() => setIsLoading(false)}
+                        onError={() => setIsLoading(false)}
+                        priority
+                    />
+                ) : null}
+                {isLoading && <CarouselSkeleton maxHeight={maxHeight} />}
+            </div>
+        );
+    }
 
     if (isLoading) {
         return <CarouselSkeleton maxHeight={maxHeight} />;
@@ -225,16 +234,19 @@ export default function ImageCarousel({
                             key={index}
                             className="flex-shrink-0 w-full relative flex items-center justify-center"
                         >
-                            <img
+                            <Image
                                 src={image.src}
                                 alt={image.alt || `图片 ${index + 1}`}
+                                width={800}
+                                height={600}
                                 className={`rounded-lg ${
                                     preserveAspectRatio
                                         ? "w-full h-auto object-contain"
                                         : "w-full h-full object-cover"
                                 }`}
                                 style={preserveAspectRatio ? { maxHeight } : {}}
-                                loading={index === 0 ? "eager" : "lazy"}
+                                priority={index === 0}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                         </div>
                     ))}

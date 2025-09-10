@@ -77,7 +77,7 @@ export default function MarkdownEditor({
                 new URL(imageUrl);
                 // URL格式有效，插入图片
                 editor?.chain().focus().setImage({ src: imageUrl.trim() }).run();
-            } catch (error) {
+            } catch {
                 alert("请输入有效的图片URL地址");
             }
         }
