@@ -38,6 +38,6 @@ jobs:
             git pull origin main
             pnpm install
             pnpm run build
-            pm2 restart blog2 || NODE_ENV=production pm2 restart blog2
+            NODE_ENV=production pm2 restart blog2
             echo "🚀 部署完成"
           EOF
