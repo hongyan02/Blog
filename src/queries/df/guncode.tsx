@@ -5,7 +5,7 @@ export const useGunCodeQuery = () => {
     return useQuery({
         queryKey: ["guncode"],
         queryFn: async () => {
-            const res = await fetch("/api/v1/df/guncode", {
+            const res = await fetch("/api/game/df/guncode", {
                 credentials: "include", // 关键：带上 HttpOnly Cookie
             });
             if (!res.ok) throw new Error(await res.text());
@@ -25,7 +25,7 @@ export const useGunCodeMutation = () => {
             description: string;
             isPublic: boolean;
         }) => {
-            const res = await fetch("/api/v1/df/guncode", {
+            const res = await fetch("/api/game/df/guncode", {
                 method: "POST",
                 credentials: "include", // 关键：带上 Cookie
                 headers: { "Content-Type": "application/json" },
@@ -46,7 +46,7 @@ export const useDeleteGunCodeMutation = () => {
 
     return useMutation({
         mutationFn: async (id: string) => {
-            const res = await fetch(`/api/v1/df/guncode`, {
+            const res = await fetch(`/api/game/df/guncode`, {
                 method: "DELETE",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },

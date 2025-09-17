@@ -4,7 +4,7 @@ export const usePublicGunCodeQuery = () => {
     return useQuery({
         queryKey: ["public-guncode"],
         queryFn: async () => {
-            const res = await fetch("/api/v1/df/guncode/public", {
+            const res = await fetch("/api/public/guncode", {
                 // credentials: "include", // 关键：带上 HttpOnly Cookie
             });
             if (!res.ok) throw new Error(await res.text());
