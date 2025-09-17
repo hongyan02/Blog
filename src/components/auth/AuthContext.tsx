@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
 
         try {
-            await fetch("/api/v1/logout", { method: "POST" });
+            await fetch("/api/auth/logout", { method: "POST" });
             router.push("/games");
         } catch {
             router.push("/auth/login");

@@ -1,12 +1,12 @@
-import HonoContext from "hono";
-import { setCookie } from "hono/cookie";
+import { setCookie, getCookie } from "hono/cookie";
+import type { Context } from "hono";
 import { getUser } from "@server/features/auth/utils";
 import { loginService, registerService } from "./service";
 
 //获取已登陆用户信息
-export async function meController(c: any) {
+export async function meController(c: Context) {
     try {
-        const token = c.req.cookie("session"); // Hono 获取 cookie
+        const token = getCookie(c, "session");
         const user = await getUser(token);
 
         if (!user) {
@@ -29,7 +29,7 @@ export async function meController(c: any) {
 }
 
 //登陆
-export async function loginController(c: any) {
+export async function loginController(c: Context) {
     const body = await c.req.json();
     const { username, password } = body;
 
@@ -65,7 +65,7 @@ export async function loginController(c: any) {
 }
 
 //注册
-export async function registerController(c: any) {
+export async function registerController(c: Context) {
     const body = await c.req.json();
     const { username, password, inviteCode } = body;
 
@@ -94,6 +94,31 @@ export async function registerController(c: any) {
         });
 
         return c.json({ message: "注册成功" });
+    } catch (err) {
+        const msg = err instanceof Error ? err.message : "注册失败";
+        return c.json({ error: msg }, 400);
+    }
+}
+
+export async function logoutController(c: Context) {
+    try {
+        // 设置 cookie
+        setCookie(c, "session", "", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Lax",
+            path: "/",
+            maxAge: 0, // 立即失效
+        });
+
+        setCookie(c, "user_info", "", {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Lax",
+            path: "/",
+            maxAge: 0, // 立即失效
+        });
+        return c.json({ message: "退出登录成功" }, 200);
     } catch (err) {
         const msg = err instanceof Error ? err.message : "注册失败";
         return c.json({ error: msg }, 400);
