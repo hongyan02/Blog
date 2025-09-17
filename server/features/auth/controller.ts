@@ -1,4 +1,5 @@
 import HonoContext from "hono";
+import { setCookie } from "hono/cookie";
 import { getUser } from "@server/features/auth/utils";
 import { loginService, registerService } from "./service";
 
@@ -40,7 +41,7 @@ export async function loginController(c: any) {
         const { token, userInfo } = await loginService(username, password);
 
         // 设置 cookie
-        c.cookie("session", token, {
+        setCookie(c, "session", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Lax",
@@ -48,7 +49,7 @@ export async function loginController(c: any) {
             maxAge: 60 * 60 * 24 * 7,
         });
 
-        c.cookie("user_info", JSON.stringify(userInfo), {
+        setCookie(c, "user_info", JSON.stringify(userInfo), {
             httpOnly: false,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Lax",
@@ -76,7 +77,7 @@ export async function registerController(c: any) {
         const { token, userInfo } = await registerService(username, password, inviteCode);
 
         // 设置 cookie
-        c.cookie("session", token, {
+        setCookie(c, "session", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Lax",
@@ -84,7 +85,7 @@ export async function registerController(c: any) {
             maxAge: 60 * 60 * 24 * 7,
         });
 
-        c.cookie("user_info", JSON.stringify(userInfo), {
+        setCookie(c, "user_info", JSON.stringify(userInfo), {
             httpOnly: false,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Lax",

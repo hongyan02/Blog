@@ -28,7 +28,7 @@ export async function loginService(username: string, encryptedPassword: string) 
     const vaild = await bcrypt.compare(decryptedPassword, user.password);
 
     if (!vaild) throw new Error("密码错误");
-    if (!user.status) throw new Error("账号不可用");
+    if (user.status === 1) throw new Error("账号不可用");
 
     //生成session
     const token = await createSession(user.id);
