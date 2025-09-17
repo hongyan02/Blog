@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/features/db/db";
+import { db } from "@server/db/db";
 import { z } from "zod";
 import { and, eq, isNull, desc } from "drizzle-orm";
-import { weaponBuilds, users } from "@/features/db/schema";
+import { weaponBuilds, users } from "@server/db/schema";
 import { getUser } from "@/features/auth/session";
 const createBuildBodySchema = z.object({
     weaponName: z.string().min(1).max(64),

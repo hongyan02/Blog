@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
 
             try {
-                const res = await fetch("/api/v1/me");
+                const res = await fetch("/api/auth/me");
                 if (res.ok) {
                     const data = await res.json();
                     setUser(data.user);
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // 刷新用户信息
     const refreshUser = useCallback(async () => {
         try {
-            const res = await fetch("/api/v1/me");
+            const res = await fetch("/api/auth/me");
             if (res.ok) {
                 const data = await res.json();
                 setUser(data.user);

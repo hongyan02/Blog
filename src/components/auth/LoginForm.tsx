@@ -29,7 +29,7 @@ export default function LoginForm() {
             // 加密密码后再发送
             const encryptedPassword = encryptPassword(data.password);
 
-            const res = await fetch("/api/v1/login", {
+            const res = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

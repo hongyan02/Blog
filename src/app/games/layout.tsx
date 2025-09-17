@@ -9,6 +9,10 @@ export default function GamesLayout({ children }: { children: React.ReactNode })
             title: "三角洲行动",
             slug: "df",
         },
+        {
+            title: "丝之歌",
+            slug: "Hollow_Knight_Silksong",
+        },
     ];
 
     return (
