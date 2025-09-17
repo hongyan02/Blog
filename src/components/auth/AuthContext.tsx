@@ -1,6 +1,5 @@
 "use client";
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { BeanHeadProps } from "../avatar";
 
 export interface UserCookieData {
@@ -23,7 +22,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<UserCookieData | null>(null);
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
 
     // 只保留cookie读取方法
     const getUserFromCookie = useCallback((): UserCookieData | null => {
@@ -91,11 +89,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         try {
             await fetch("/api/auth/logout", { method: "POST" });
-            router.push("/games");
+            // 刷新页面以确保认证状态被正确清除
+            window.location.reload();
         } catch {
-            router.push("/auth/login");
+            // 即使API调用失败，也刷新页面以清除本地状态
+            window.location.reload();
         }
-    }, [router]);
+    }, []);
 
     // 刷新用户信息
     const refreshUser = useCallback(async () => {
