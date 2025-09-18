@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useGunCodeQuery } from "@/queries/df/guncode";
-import { GunCodeCard, GunCodeData } from "@/components/DF/GunCodeCard";
-import AddGunCodeForm from "@/components/DF/AddCodeForm";
+import { GunCodeCard, GunCodeData } from "@/components/df/GunCodeCard";
+import AddGunCodeForm from "@/components/df/AddCodeForm";
 import { UserHeader } from "@/shared/layout/UserHeader";
 import { useAuth } from "@/components/auth/AuthContext";
 

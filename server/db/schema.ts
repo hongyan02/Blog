@@ -101,6 +101,7 @@ export const weaponBuilds = pgTable(
         deletedAt: t.timestamp("deleted_at"),
 
         createdAt: t.timestamp("created_at").defaultNow().notNull(),
+
         updatedAt: t.timestamp("updated_at").defaultNow().notNull(),
     }),
     (table) => [

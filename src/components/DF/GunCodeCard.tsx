@@ -12,7 +12,7 @@ export type GunCodeData = {
     gunCode: string;
     description: string;
     isPublic: boolean;
-    createdAt: Date;
+    createdAt: string; // ISO 8601 字符串格式，例如："2025-09-17T19:31:20.237Z"
     username: string;
     avatar: BeanHeadProps;
 };

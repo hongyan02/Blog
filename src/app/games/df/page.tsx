@@ -1,7 +1,7 @@
 "use client";
 import { usePublicGunCodeQuery } from "@/queries/df/public/guncode";
-import { GunCodeCard, GunCodeData } from "@/components/DF/GunCodeCard";
-import { GunCodeGridSkeleton } from "@/components/DF/GunCodeSkeleton";
+import { GunCodeCard, GunCodeData } from "@/components/df/GunCodeCard";
+import { GunCodeGridSkeleton } from "@/components/df/GunCodeSkeleton";
 import { useAuth } from "@/components/auth/AuthContext";
 import { UserHeader } from "@/shared/layout/UserHeader";
 import { Suspense } from "react";

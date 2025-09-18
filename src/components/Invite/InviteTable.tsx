@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/shared/ui/table";
 import { useInviteCode } from "@/queries/admin/invitecode";
-import { Invite } from "@/features/db/schema";
+import { Invite } from "@server/db/schema";
 
 export default function InviteTable() {
     const { data, isLoading, error } = useInviteCode();

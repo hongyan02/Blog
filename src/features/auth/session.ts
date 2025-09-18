@@ -2,9 +2,9 @@ import crypto from "crypto";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import { eq } from "drizzle-orm";
-import { db } from "@/features/db/db";
-import { sessions, users } from "@/features/db/schema";
-import type { Session, User } from "@/features/db/schema";
+import { db } from "@server/db/db";
+import { sessions, users } from "@server/db/schema";
+import type { Session, User } from "@server/db/schema";
 
 //创建session
 export async function createSession(userId: string) {
@@ -58,7 +58,7 @@ export async function verifySessionToken(token: string): Promise<Session | null>
     return row;
 }
 
-//获取当前用户信息
+//客户端获取当前用户信息
 export const getUser = cache(async (): Promise<User | null> => {
     //获取cookie中的id和密钥
     const cookieStore = await cookies();

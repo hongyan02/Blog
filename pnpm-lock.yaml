@@ -62,6 +62,9 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      hono:
+        specifier: ^4.9.7
+        version: 4.9.7
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -2411,6 +2414,10 @@ packages:
   highlight.js@11.11.1:
     resolution: {integrity: sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w==}
     engines: {node: '>=12.0.0'}
+
+  hono@4.9.7:
+    resolution: {integrity: sha512-t4Te6ERzIaC48W3x4hJmBwgNlLhmiEdEE5ViYb02ffw4ignHNHa5IBtPjmbKstmtKa8X6C35iWwK4HaqvrzG9w==}
+    engines: {node: '>=16.9.0'}
 
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
@@ -6294,6 +6301,8 @@ snapshots:
       '@types/hast': 3.0.4
 
   highlight.js@11.11.1: {}
+
+  hono@4.9.7: {}
 
   html-void-elements@3.0.0: {}
 

@@ -1,6 +1,6 @@
-import { db } from "@/features/db/db";
-import { weaponBuilds, users } from "@/features/db/schema";
-import type { WeaponBuild } from "@/features/db/schema";
+import { db } from "@server/db/db";
+import { weaponBuilds, users } from "@server/db/schema";
+import type { WeaponBuild } from "@server/db/schema";
 import { BeanHeadProps } from "@/components/avatar";
 import { and, eq, isNull, desc } from "drizzle-orm";
 
