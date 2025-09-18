@@ -4,6 +4,7 @@ import authRoute from "@server/features/auth/route";
 import inviteRoute from "@server/features/invite/route";
 import timelineRoute from "@server/features/timeline/route";
 import { publicGunCodeRoute, guncodeRoute } from "@server/features/game/df/route";
+import steamAchievementRoute from "@server/features/game/steamAchievement/route";
 
 const app = new Hono().basePath("/api");
 
@@ -18,6 +19,8 @@ app.route("/v1", timelineRoute);
 app.route("/public", publicGunCodeRoute);
 
 app.route("/game/df", guncodeRoute);
+
+app.route("/game", steamAchievementRoute);
 
 export { app };
 

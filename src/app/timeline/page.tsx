@@ -46,4 +46,4 @@ export default async function TimeLinePage() {
 }
 
 // ISR 配置：每小时重新验证一次
-export const revalidate = 3600;
+export const revalidate = 1800;

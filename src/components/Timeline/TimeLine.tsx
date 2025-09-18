@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactElement, useEffect, useRef, useState } from "react";
-import ImageCarousel from "@/components/ImageCarousel";
+import ImageCarousel from "@/components/Timeline/ImageCarousel";
 
 type Props = {
     date: string;
