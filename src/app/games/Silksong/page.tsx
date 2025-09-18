@@ -3,6 +3,8 @@ import Map from "@/components/silksong/Map";
 import MapSkeleton from "@/components/silksong/MapSkeleton";
 import { Suspense } from "react";
 
+export const revalidate = 1800;
+
 export default function SilkSongPage() {
     return (
         <>
