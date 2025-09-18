@@ -1,9 +1,24 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    /* config options here */
     images: {
-        domains: ["agcl.space", "pic.agcl.ink"], // 允许的外链图片域名
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "agcl.space",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "pic.agcl.ink",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "steamcdn-a.akamaihd.net",
+                pathname: "/**",
+            },
+        ],
     },
 };
 

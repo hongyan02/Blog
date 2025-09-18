@@ -39,12 +39,18 @@ export interface AchievementResult {
     unlockTime?: number; // 未达成时为 undefined
 }
 
+export interface AchievementSummary {
+    achievements: AchievementResult[];
+    total: number;
+    unlocked: number;
+}
+
 export async function steamAchievementService(
     key: string,
     appid: number,
     steamid: number,
     l = "schinese"
-): Promise<AchievementResult[]> {
+): Promise<AchievementSummary> {
     // 并行拉取两份数据，更快
     const [schema, player] = await Promise.all([
         got<SteamSchemaResp>("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2", {
@@ -65,15 +71,26 @@ export async function steamAchievementService(
     const playerMap = new Map(player.body.playerstats.achievements.map((a) => [a.apiname, a]));
 
     // 合并
-    return schema.body.game.availableGameStats.achievements.map((def): AchievementResult => {
-        const pa = playerMap.get(def.name);
-        return {
-            name: def.name,
-            displayName: def.displayName,
-            description: def.description,
-            icon: pa?.achieved ? def.icon : def.icongray, // 自动选图标
-            achieved: pa?.achieved ?? 0,
-            unlockTime: pa?.achieved ? pa.unlocktime : undefined,
-        };
-    });
+    const achievements = schema.body.game.availableGameStats.achievements.map(
+        (def): AchievementResult => {
+            const pa = playerMap.get(def.name);
+            return {
+                name: def.name,
+                displayName: def.displayName,
+                description: def.description,
+                icon: pa?.achieved ? def.icon : def.icongray, // 自动选图标
+                achieved: pa?.achieved ?? 0,
+                unlockTime: pa?.achieved ? pa.unlocktime : undefined,
+            };
+        }
+    );
+
+    const unlocked = achievements.filter((a) => a.achieved === 1).length;
+    const total = achievements.length;
+
+    return {
+        achievements,
+        total,
+        unlocked,
+    };
 }

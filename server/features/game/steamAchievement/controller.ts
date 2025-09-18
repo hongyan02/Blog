@@ -10,9 +10,14 @@ export async function steamAchievementController(c: Context) {
         const steamid = Number(c.req.query("steamid"));
         const l = c.req.query("l") ?? "schinese";
 
-        const achievements = await steamAchievementService(key, appid, steamid, l);
+        const { achievements, unlocked, total } = await steamAchievementService(
+            key,
+            appid,
+            steamid,
+            l
+        );
 
-        return c.json({ achievements });
+        return c.json({ achievements, unlocked, total });
     } catch (err) {
         const msg = err instanceof Error ? err.message : "登陆失败";
         return c.json({ error: msg }, 400);

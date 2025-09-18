@@ -11,7 +11,7 @@ export default function GamesLayout({ children }: { children: React.ReactNode })
         },
         {
             title: "丝之歌",
-            slug: "Hollow_Knight_Silksong",
+            slug: "Silksong",
         },
     ];
 
