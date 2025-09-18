@@ -1,0 +1,43 @@
+name: Deploy via SSH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH and Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        run: |
+          # 创建 .ssh 目录
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          # 写入私钥文件
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # 禁止首次连接时的 host key 检查（防止交互卡住）
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+          chmod 600 ~/.ssh/config
+
+          # 测试 ssh 是否能连通
+          ssh -i ~/.ssh/id_rsa -p 2002 root@111.230.192.103 'echo "✅ SSH 连接成功"'
+
+          # 真正执行部署命令
+          ssh -i ~/.ssh/id_rsa -p 2002 root@111.230.192.103 <<'EOF'
+            cd /root/me/blog/
+            git pull origin main
+            pnpm install
+            pnpm run build
+            NODE_ENV=production pm2 restart blog2
+            echo "🚀 部署完成"
+          EOF
