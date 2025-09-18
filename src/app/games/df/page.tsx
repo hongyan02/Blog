@@ -6,7 +6,7 @@ import { useAuth } from "@/components/auth/AuthContext";
 import { UserHeader } from "@/shared/layout/UserHeader";
 import { Suspense } from "react";
 
-export default function DF() {
+export default function DFPapge() {
     const { data, isLoading, error } = usePublicGunCodeQuery();
     const { user, loading } = useAuth();
 
